@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Check } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
-import { offer, pageTiers, formatPrice } from "@/config/offer";
+import { offer, pageTiers, formatPrice, DEFAULT_TIER_INDEX } from "@/config/offer";
 import { handleInitiateCheckout } from "@/lib/checkout";
 import { trackEvent } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
@@ -16,7 +16,7 @@ interface OfferSectionProps {
 export function OfferSection({ childName }: OfferSectionProps) {
   const ref = useRef<HTMLDivElement>(null);
   const trackedRef = useRef(false);
-  const [selectedTierIndex, setSelectedTierIndex] = useState(0);
+  const [selectedTierIndex, setSelectedTierIndex] = useState(DEFAULT_TIER_INDEX);
 
   useEffect(() => {
     const el = ref.current;
@@ -39,7 +39,6 @@ export function OfferSection({ childName }: OfferSectionProps) {
     : "Quero criar a história do meu filho";
 
   const selectedTier = pageTiers[selectedTierIndex];
-  const totalPrice = offer.price + selectedTier.extraPrice;
 
   return (
     <section ref={ref} className="py-14 sm:py-20">
@@ -71,8 +70,11 @@ export function OfferSection({ childName }: OfferSectionProps) {
               ))}
             </ul>
 
-            <div className="mt-6">
-              <p className="mb-2 text-sm font-semibold text-ink">Número de páginas</p>
+            <div className="mt-7">
+              <p className="mb-1 text-sm font-semibold text-ink">Tamanho do livro</p>
+              <p className="mb-3 text-xs text-ink-soft">
+                Quanto mais páginas, mais capítulos e ilustrações na aventura dele.
+              </p>
               <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
                 {pageTiers.map((tier, index) => {
                   const active = index === selectedTierIndex;
@@ -82,40 +84,46 @@ export function OfferSection({ childName }: OfferSectionProps) {
                       type="button"
                       onClick={() => setSelectedTierIndex(index)}
                       className={cn(
-                        "flex flex-col items-center gap-0.5 rounded-xl border-2 px-2 py-3 text-center transition-colors",
+                        "relative flex flex-col items-center gap-0.5 rounded-xl border-2 px-2 pb-3 pt-4 text-center transition-colors",
                         active
                           ? "border-primary bg-primary/10"
                           : "border-ink/10 bg-cream hover:border-primary/40",
                       )}
                     >
+                      {tier.badge && (
+                        <span className="absolute -top-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-accent px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-ink">
+                          {tier.badge}
+                        </span>
+                      )}
                       <span className="font-display text-lg font-bold text-ink">{tier.pages}</span>
                       <span className="text-[11px] uppercase tracking-wide text-ink-soft">páginas</span>
-                      <span className="text-[11px] font-semibold text-primary-dark">
-                        {tier.extraPrice === 0 ? "Incluído" : `+ ${formatPrice(tier.extraPrice)}`}
+                      <span className="mt-0.5 text-xs font-bold text-primary-dark">
+                        {formatPrice(tier.price)}
                       </span>
-                      {tier.savings && (
-                        <span className="text-[10px] text-success">economia {formatPrice(tier.savings)}</span>
-                      )}
                     </button>
                   );
                 })}
               </div>
             </div>
 
-            <div className="mt-6 flex items-end justify-center gap-2">
-              <span className="text-sm text-ink-soft line-through">
-                {formatPrice(offer.compareAtPrice + selectedTier.extraPrice)}
+            <div className="mt-6 text-center">
+              <span className="font-display text-4xl font-bold text-primary-dark">
+                {formatPrice(selectedTier.price)}
               </span>
-              <span className="font-display text-3xl font-bold text-primary-dark">
-                {formatPrice(totalPrice)}
-              </span>
+              <p className="mt-1 text-xs text-ink-soft">
+                Pagamento único. O livro é seu para sempre.
+              </p>
             </div>
 
             <Button
               size="lg"
-              className="mt-6 w-full"
+              className="mt-5 w-full"
               onClick={() =>
-                handleInitiateCheckout({ childName, price: totalPrice, pages: selectedTier.pages })
+                handleInitiateCheckout({
+                  childName,
+                  price: selectedTier.price,
+                  pages: selectedTier.pages,
+                })
               }
             >
               {ctaLabel}

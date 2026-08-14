@@ -1,22 +1,23 @@
 export interface PageTier {
   pages: number;
-  /** Preço adicional sobre o `price` base. 0 = já incluído no preço base. */
-  extraPrice: number;
-  /** Quanto o combo economiza comparado a comprar os blocos extras separadamente. */
-  savings?: number;
+  /** Preço final e absoluto desse pacote. */
+  price: number;
+  /** Rótulo curto opcional exibido no card (ex: "Mais escolhido"). */
+  badge?: string;
 }
 
+// Preço base de 6 páginas, subindo R$ 5,00 a cada faixa.
 export const pageTiers: PageTier[] = [
-  { pages: 6, extraPrice: 0 },
-  { pages: 12, extraPrice: 19.9 },
-  { pages: 18, extraPrice: 34.9, savings: 4.9 },
-  { pages: 24, extraPrice: 44.9, savings: 14.9 },
+  { pages: 6, price: 29.9 },
+  { pages: 12, price: 34.9, badge: "Mais escolhido" },
+  { pages: 18, price: 39.9 },
+  { pages: 24, price: 44.9 },
 ];
+
+export const DEFAULT_TIER_INDEX = 1;
 
 export const offer = {
   productName: "Era Uma Vez Você",
-  price: 47,
-  compareAtPrice: 97,
   currency: "BRL",
   // TODO: substituir pela URL real do checkout quando a integração for feita.
   checkoutUrl: "",
