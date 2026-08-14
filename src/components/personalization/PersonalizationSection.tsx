@@ -178,11 +178,8 @@ export const PersonalizationSection = forwardRef<HTMLElement, PersonalizationSec
 
             {phase === "preview" && preview && (
               <StoryPreviewSection
-                childName={session.childName}
+                session={session}
                 preview={preview}
-                photoDataUrl={session.photoDataUrl}
-                theme={session.theme}
-                visualStyle={session.visualStyle}
                 aiImageUrl={buildCoverImageUrl(session)}
                 generatedByAi={usedRealAi}
                 onUnlock={handleUnlock}

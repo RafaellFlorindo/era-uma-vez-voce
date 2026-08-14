@@ -11,7 +11,8 @@ export type AnalyticsEvent =
   | "offer_viewed"
   | "initiate_checkout"
   | "ai_story_generation_failed"
-  | "narration_requested";
+  | "narration_requested"
+  | "ebook_download_requested";
 
 export type AnalyticsPayload = Record<string, unknown>;
 

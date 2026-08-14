@@ -34,12 +34,35 @@ const PERSONALITY_WORDS: Record<string, string> = {
   timido: "gentle",
 };
 
+// Ações genéricas por posição na história — mantém o personagem/estilo
+// consistentes entre as imagens, variando só o momento da cena.
+const PAGE_ACTIONS = [
+  "at the very start of the adventure, curiously discovering something new",
+  "in the middle of an exciting moment, full of action and wonder",
+  "triumphant at the end of the adventure, celebrating happily",
+];
+
 function hashSeed(input: string): number {
   let hash = 0;
   for (let i = 0; i < input.length; i++) {
     hash = (hash * 31 + input.charCodeAt(i)) >>> 0;
   }
   return hash % 1_000_000;
+}
+
+function buildCharacterDescription(session: StorySession): { description: string; theme: ScenePrompt; style: string } {
+  const name = session.childName?.trim() || "a child";
+  const age = session.age ?? 6;
+  const gender = session.gender === "menino" ? "boy" : session.gender === "menina" ? "girl" : "child";
+  const personalityWord = PERSONALITY_WORDS[session.personality[0] ?? "curioso"];
+  const theme = THEME_PROMPTS[session.theme ?? "magia"];
+  const style = STYLE_PROMPTS[session.visualStyle ?? "livro-3d"];
+
+  return {
+    description: `a ${personalityWord} ${age}-year-old ${gender} character named ${name}`,
+    theme,
+    style,
+  };
 }
 
 /**
@@ -51,22 +74,40 @@ function hashSeed(input: string): number {
  * provedor final com preservação de identidade.
  */
 export function buildCoverImageUrl(session: StorySession): string {
-  const name = session.childName?.trim() || "a child";
-  const age = session.age ?? 6;
-  const gender = session.gender === "menino" ? "boy" : session.gender === "menina" ? "girl" : "child";
-  const personalityWord = PERSONALITY_WORDS[session.personality[0] ?? "curioso"];
-  const theme = THEME_PROMPTS[session.theme ?? "magia"];
-  const style = STYLE_PROMPTS[session.visualStyle ?? "livro-3d"];
+  const { description, theme, style } = buildCharacterDescription(session);
 
   const prompt = [
-    `a ${personalityWord} ${age}-year-old ${gender} character named ${name}`,
+    description,
     `standing next to ${theme.companion}`,
     `in ${theme.scene}`,
     style,
     "vertical children's book cover illustration, warm cinematic lighting, high quality, no text, no watermark",
   ].join(", ");
 
-  const seed = hashSeed(`${name}|${session.theme}|${session.visualStyle}`);
+  const seed = hashSeed(`${session.childName}|${session.theme}|${session.visualStyle}|cover`);
 
   return `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=768&height=1024&seed=${seed}&nologo=true`;
+}
+
+/**
+ * Mesma lógica da capa, mas para uma página específica da história (0, 1, 2...),
+ * variando a ação da cena para dar sensação de progressão mantendo o mesmo
+ * personagem, companheiro e estilo visual.
+ */
+export function buildPageImageUrl(session: StorySession, pageIndex: number): string {
+  const { description, theme, style } = buildCharacterDescription(session);
+  const action = PAGE_ACTIONS[pageIndex % PAGE_ACTIONS.length];
+
+  const prompt = [
+    description,
+    `with ${theme.companion}`,
+    action,
+    `in ${theme.scene}`,
+    style,
+    "children's book illustration, warm cinematic lighting, high quality, no text, no watermark",
+  ].join(", ");
+
+  const seed = hashSeed(`${session.childName}|${session.theme}|${session.visualStyle}|page${pageIndex}`);
+
+  return `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=1024&height=768&seed=${seed}&nologo=true`;
 }

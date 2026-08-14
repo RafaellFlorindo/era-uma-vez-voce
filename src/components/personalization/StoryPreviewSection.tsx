@@ -1,19 +1,16 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Lock, Loader2, Pause, Play, Sparkles } from "lucide-react";
+import { Download, Lock, Loader2, Pause, Play, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { StyledPhotoCover } from "@/components/personalization/StyledPhotoCover";
-import { fetchAiNarration } from "@/services/story/aiStoryClient";
+import { downloadAiEbook, fetchAiNarration } from "@/services/story/aiStoryClient";
 import { trackEvent } from "@/lib/analytics";
 import { StorySession, StoryPreview } from "@/types/story";
 
 interface StoryPreviewSectionProps {
-  childName: string;
+  session: StorySession;
   preview: StoryPreview;
-  photoDataUrl?: StorySession["photoDataUrl"];
-  theme?: StorySession["theme"];
-  visualStyle?: StorySession["visualStyle"];
   aiImageUrl?: string;
   generatedByAi?: boolean;
   onUnlock: () => void;
@@ -53,16 +50,28 @@ function useNarrationPrefetch(pages: string[]) {
 }
 
 export function StoryPreviewSection({
-  childName,
+  session,
   preview,
-  photoDataUrl,
-  theme,
-  visualStyle,
   aiImageUrl,
   generatedByAi,
   onUnlock,
 }: StoryPreviewSectionProps) {
   const getAudio = useNarrationPrefetch(preview.pages);
+  const childName = session.childName;
+  const [ebookState, setEbookState] = useState<"idle" | "loading" | "error">("idle");
+
+  async function handleDownloadEbook() {
+    if (ebookState === "loading") return;
+    setEbookState("loading");
+    trackEvent("ebook_download_requested", { childName });
+    try {
+      await downloadAiEbook(session, { title: preview.title, intro: preview.intro, pages: preview.pages });
+      setEbookState("idle");
+    } catch (error) {
+      console.warn("[ebook] falhou:", error);
+      setEbookState("error");
+    }
+  }
 
   return (
     <div className="mx-auto w-full max-w-2xl">
@@ -79,9 +88,9 @@ export function StoryPreviewSection({
         <div className="grid grid-cols-1 sm:grid-cols-[1fr_1.3fr]">
           <div className="flex items-center justify-center bg-secondary p-6">
             <StyledPhotoCover
-              photoDataUrl={photoDataUrl}
-              theme={theme}
-              visualStyle={visualStyle}
+              photoDataUrl={session.photoDataUrl}
+              theme={session.theme}
+              visualStyle={session.visualStyle}
               aiImageUrl={aiImageUrl}
               title={preview.title}
               className="max-w-[220px]"
@@ -104,6 +113,22 @@ export function StoryPreviewSection({
               getAudio={() => getAudio(index)}
             />
           ))}
+
+          <button
+            onClick={handleDownloadEbook}
+            disabled={ebookState === "loading"}
+            className="flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-ink/20 bg-cream py-3 text-xs font-medium text-ink-soft transition-colors hover:border-primary/40 hover:text-primary-dark disabled:opacity-60"
+          >
+            {ebookState === "loading" ? (
+              <Loader2 className="h-3.5 w-3.5 animate-spin" />
+            ) : (
+              <Download className="h-3.5 w-3.5" />
+            )}
+            {ebookState === "loading" ? "Montando o PDF de prévia..." : "Baixar estas páginas em PDF"}
+          </button>
+          {ebookState === "error" && (
+            <p className="text-center text-xs text-primary-dark">Não foi possível gerar o PDF agora.</p>
+          )}
 
           <div className="relative overflow-hidden rounded-xl border-2 border-dashed border-primary/30 bg-cream p-5 text-center">
             <p className="blur-[3px] select-none text-sm leading-relaxed text-ink-soft">
