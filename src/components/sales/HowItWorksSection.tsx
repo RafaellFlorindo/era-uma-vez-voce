@@ -29,22 +29,31 @@ export function HowItWorksSection() {
           subtitle="Três perguntas rápidas e você já vê a história dele começando."
         />
 
-        <div className="mx-auto mt-10 grid max-w-4xl grid-cols-1 gap-5 sm:grid-cols-3">
-          {steps.map(({ icon: Icon, title, description }, index) => (
-            <div
-              key={title}
-              className="relative flex flex-col items-center rounded-card bg-white p-6 text-center shadow-sm shadow-ink/5"
-            >
-              <span className="absolute -top-3 -left-3 flex h-8 w-8 items-center justify-center rounded-full bg-primary font-display text-sm font-semibold text-white">
-                {index + 1}
-              </span>
-              <span className="flex h-14 w-14 items-center justify-center rounded-full bg-accent/20">
-                <Icon className="h-7 w-7 text-primary-dark" />
-              </span>
-              <p className="mt-4 font-display text-base font-semibold text-ink">{title}</p>
-              <p className="mt-2 text-sm text-ink-soft">{description}</p>
-            </div>
-          ))}
+        <div className="relative mx-auto mt-12 max-w-4xl">
+          {/* Linha que costura os três passos no desktop. */}
+          <div
+            className="absolute inset-x-[16%] top-[52px] hidden border-t-2 border-dashed border-primary/25 sm:block"
+            aria-hidden
+          />
+
+          <div className="relative grid grid-cols-1 gap-5 sm:grid-cols-3">
+            {steps.map(({ icon: Icon, title, description }, index) => (
+              <div key={title} className="flex flex-col items-center text-center">
+                <span className="relative flex h-[104px] w-[104px] items-center justify-center rounded-full border border-ink/5 bg-white shadow-md shadow-ink/5">
+                  <span className="flex h-16 w-16 items-center justify-center rounded-full bg-accent/20">
+                    <Icon className="h-8 w-8 text-primary-dark" />
+                  </span>
+                  <span className="absolute -right-1 top-0 flex h-8 w-8 items-center justify-center rounded-full bg-primary font-display text-sm font-bold text-white shadow-sm">
+                    {index + 1}
+                  </span>
+                </span>
+                <p className="mt-5 font-display text-base font-semibold text-ink">{title}</p>
+                <p className="mt-2 max-w-[15rem] text-sm leading-relaxed text-ink-soft">
+                  {description}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
       </Container>
     </section>
