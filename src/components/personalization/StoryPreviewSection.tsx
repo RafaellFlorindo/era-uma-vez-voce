@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Download, Lock, Loader2, Pause, Play, Sparkles } from "lucide-react";
+import { ImageOff, Lock, Loader2, Pause, Play, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { StyledPhotoCover } from "@/components/personalization/StyledPhotoCover";
-import { downloadAiEbook, fetchAiNarration } from "@/services/story/aiStoryClient";
+import { fetchAiNarration } from "@/services/story/aiStoryClient";
+import { buildPageImageUrl } from "@/services/story/pollinationsImage";
 import { trackEvent } from "@/lib/analytics";
 import { StorySession, StoryPreview } from "@/types/story";
 
@@ -58,20 +59,6 @@ export function StoryPreviewSection({
 }: StoryPreviewSectionProps) {
   const getAudio = useNarrationPrefetch(preview.pages);
   const childName = session.childName;
-  const [ebookState, setEbookState] = useState<"idle" | "loading" | "error">("idle");
-
-  async function handleDownloadEbook() {
-    if (ebookState === "loading") return;
-    setEbookState("loading");
-    trackEvent("ebook_download_requested", { childName });
-    try {
-      await downloadAiEbook(session, { title: preview.title, intro: preview.intro, pages: preview.pages });
-      setEbookState("idle");
-    } catch (error) {
-      console.warn("[ebook] falhou:", error);
-      setEbookState("error");
-    }
-  }
 
   return (
     <div className="mx-auto w-full max-w-2xl">
@@ -110,38 +97,23 @@ export function StoryPreviewSection({
               key={index}
               label={`Página ${index + 1}`}
               content={page}
+              imageUrl={buildPageImageUrl(session, index)}
               getAudio={() => getAudio(index)}
             />
           ))}
 
-          <button
-            onClick={handleDownloadEbook}
-            disabled={ebookState === "loading"}
-            className="flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-ink/20 bg-cream py-3 text-xs font-medium text-ink-soft transition-colors hover:border-primary/40 hover:text-primary-dark disabled:opacity-60"
-          >
-            {ebookState === "loading" ? (
-              <Loader2 className="h-3.5 w-3.5 animate-spin" />
-            ) : (
-              <Download className="h-3.5 w-3.5" />
-            )}
-            {ebookState === "loading" ? "Montando o PDF de prévia..." : "Baixar estas páginas em PDF"}
-          </button>
-          {ebookState === "error" && (
-            <p className="text-center text-xs text-primary-dark">Não foi possível gerar o PDF agora.</p>
-          )}
-
-          <div className="relative overflow-hidden rounded-xl border-2 border-dashed border-primary/30 bg-cream p-5 text-center">
-            <p className="blur-[3px] select-none text-sm leading-relaxed text-ink-soft">
-              A aventura de {childName || "seu filho"} continua se desenrolando, capítulo após
-              capítulo, com novas descobertas e ilustrações exclusivas esperando em cada página...
-            </p>
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-cream/85 px-4">
-              <span className="flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-ink shadow-sm">
-                <Lock className="h-3.5 w-3.5" />
-                Página 4 em diante bloqueadas
-              </span>
-              <Button onClick={onUnlock}>Quero ver a história completa</Button>
+          <div className="rounded-xl border border-primary/20 bg-gradient-to-br from-primary/10 to-accent/10 p-6 text-center">
+            <div className="mx-auto flex h-11 w-11 items-center justify-center rounded-full bg-white shadow-sm">
+              <Lock className="h-5 w-5 text-primary-dark" />
             </div>
+            <p className="mt-3 font-display text-base font-semibold text-ink">E essa foi só o começo...</p>
+            <p className="mx-auto mt-1 max-w-sm text-sm text-ink-soft">
+              A partir da página 4, novos capítulos e ilustrações exclusivas esperam por{" "}
+              {childName || "seu filho"}.
+            </p>
+            <Button onClick={onUnlock} className="mt-4 w-full sm:w-auto">
+              Quero ver a história completa
+            </Button>
           </div>
         </div>
       </div>
@@ -154,14 +126,31 @@ type NarrationState = "idle" | "loading" | "playing" | "error";
 function PageBlock({
   label,
   content,
+  imageUrl,
   getAudio,
 }: {
   label: string;
   content: string;
+  imageUrl: string;
   getAudio: () => Promise<string>;
 }) {
   const [state, setState] = useState<NarrationState>("idle");
+  const [imageStatus, setImageStatus] = useState<"loading" | "loaded" | "error">("loading");
+  const [retryKey, setRetryKey] = useState(0);
+  const retryCountRef = useRef(0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  function handleImageError() {
+    // A API gratuita às vezes bloqueia o pedido com um desafio anti-bot que
+    // não dá pra resolver automaticamente — tenta de novo algumas vezes
+    // antes de desistir e mostrar um estado de erro.
+    if (retryCountRef.current < 2) {
+      retryCountRef.current += 1;
+      setTimeout(() => setRetryKey((k) => k + 1), 1200);
+    } else {
+      setImageStatus("error");
+    }
+  }
 
   async function handleNarrate() {
     if (state === "loading") return;
@@ -195,23 +184,52 @@ function PageBlock({
   }
 
   return (
-    <div className="rounded-xl border border-ink/10 bg-cream p-4">
-      <div className="mb-1.5 flex items-center justify-between gap-2">
-        <p className="text-xs font-semibold uppercase tracking-wide text-primary-dark">{label}</p>
-        <button
-          onClick={handleNarrate}
-          className="flex items-center gap-1.5 rounded-full bg-white px-2.5 py-1 text-xs font-medium text-ink-soft shadow-sm transition-colors hover:text-primary-dark"
-        >
-          {state === "loading" && <Loader2 className="h-3 w-3 animate-spin" />}
-          {state === "playing" && <Pause className="h-3 w-3" />}
-          {(state === "idle" || state === "error") && <Play className="h-3 w-3" />}
-          {state === "loading" ? "Preparando..." : state === "playing" ? "Pausar" : "Ouvir"}
-        </button>
+    <div className="overflow-hidden rounded-xl border border-ink/10 bg-cream">
+      <div className="relative aspect-video w-full bg-ink/5">
+        {imageStatus !== "error" && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            key={retryKey}
+            src={retryKey > 0 ? `${imageUrl}&retry=${retryKey}` : imageUrl}
+            alt={label}
+            className={`h-full w-full object-cover transition-opacity duration-500 ${
+              imageStatus === "loaded" ? "opacity-100" : "opacity-0"
+            }`}
+            onLoad={() => setImageStatus("loaded")}
+            onError={handleImageError}
+          />
+        )}
+        {imageStatus === "loading" && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <Loader2 className="h-5 w-5 animate-spin text-ink-soft/50" />
+          </div>
+        )}
+        {imageStatus === "error" && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 text-ink-soft/50">
+            <ImageOff className="h-5 w-5" />
+            <span className="text-[11px]">Ilustração indisponível no momento</span>
+          </div>
+        )}
       </div>
-      <p className="text-sm leading-relaxed text-ink-soft">{content}</p>
-      {state === "error" && (
-        <p className="mt-1.5 text-xs text-primary-dark">Não foi possível gerar a narração agora.</p>
-      )}
+
+      <div className="p-4">
+        <div className="mb-1.5 flex items-center justify-between gap-2">
+          <p className="text-xs font-semibold uppercase tracking-wide text-primary-dark">{label}</p>
+          <button
+            onClick={handleNarrate}
+            className="flex items-center gap-1.5 rounded-full bg-white px-2.5 py-1 text-xs font-medium text-ink-soft shadow-sm transition-colors hover:text-primary-dark"
+          >
+            {state === "loading" && <Loader2 className="h-3 w-3 animate-spin" />}
+            {state === "playing" && <Pause className="h-3 w-3" />}
+            {(state === "idle" || state === "error") && <Play className="h-3 w-3" />}
+            {state === "loading" ? "Preparando..." : state === "playing" ? "Pausar" : "Ouvir"}
+          </button>
+        </div>
+        <p className="text-sm leading-relaxed text-ink-soft">{content}</p>
+        {state === "error" && (
+          <p className="mt-1.5 text-xs text-primary-dark">Não foi possível gerar a narração agora.</p>
+        )}
+      </div>
     </div>
   );
 }
