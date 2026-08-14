@@ -5,18 +5,18 @@ import { SectionTitle } from "@/components/ui/SectionTitle";
 const steps = [
   {
     icon: PenLine,
-    title: "Conte um pouco sobre seu filho",
-    description: "Nome, idade, foto e algumas características.",
+    title: "Conte quem é seu filho",
+    description: "Nome, idade, uma foto e o jeitinho dele. Leva menos de 2 minutos.",
   },
   {
     icon: Compass,
-    title: "Escolha o mundo que ele vai explorar",
-    description: "Dinossauros, espaço, magia, piratas, animais e outros universos.",
+    title: "Escolha o mundo dele",
+    description: "Dinossauros, espaço, magia, piratas, animais ou fundo do mar.",
   },
   {
     icon: BookOpenCheck,
-    title: "Veja ele se tornar o protagonista",
-    description: "A história é criada utilizando seu DNA do Protagonista.",
+    title: "Veja ele virar o protagonista",
+    description: "A história nasce na hora, feita em cima do DNA do Protagonista dele.",
   },
 ];
 
@@ -24,7 +24,10 @@ export function HowItWorksSection() {
   return (
     <section className="py-14 sm:py-20">
       <Container>
-        <SectionTitle title="Como funciona" />
+        <SectionTitle
+          title="Como funciona"
+          subtitle="Três perguntas rápidas e você já vê a história dele começando."
+        />
 
         <div className="mx-auto mt-10 grid max-w-4xl grid-cols-1 gap-5 sm:grid-cols-3">
           {steps.map(({ icon: Icon, title, description }, index) => (

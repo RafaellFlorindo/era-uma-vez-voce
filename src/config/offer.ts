@@ -21,14 +21,13 @@ export const offer = {
   // TODO: substituir pela URL real do checkout quando a integração for feita.
   checkoutUrl: "",
   features: [
-    "História completamente personalizada",
-    "Personagem inspirado nele(a)",
-    "Capa exclusiva",
-    "Diversas ilustrações",
-    "Vários capítulos",
-    "Versão digital para ler quando quiser",
-    "Narração completa da história",
-    "Acesso para ouvir quantas vezes quiser",
+    "História escrita do zero para o seu filho",
+    "Personagem criado a partir da foto dele",
+    "Capa com o nome dele no título",
+    "Ilustrações originais em todas as páginas",
+    "Narração em áudio para ouvir na hora de dormir",
+    "Livro digital para ler e ouvir quantas vezes quiser",
+    "Acesso imediato, sem esperar entrega",
   ],
 };
 

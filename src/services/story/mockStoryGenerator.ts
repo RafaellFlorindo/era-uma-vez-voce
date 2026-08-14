@@ -23,7 +23,7 @@ const THEME_CONTENT: Record<ThemeId, ThemeContent> = {
       "uma trilha de folhas mordidas levando a uma caverna",
     ],
     page2:
-      "{name} seguiu as pegadas com cuidado, até chegar a uma clareira onde um dinossauro gigante dormia. Ao acordar, ele não pareceu assustador — só curioso com aquele novo amiguinho.",
+      "{name} seguiu as pegadas com cuidado, até chegar a uma clareira onde um dinossauro gigante dormia. Ao acordar, ele não pareceu assustador, só curioso com aquele novo amiguinho.",
     page3:
       "Foi ali que {name} entendeu: aquele vale guardava um segredo havia muito tempo, e só um coração corajoso como o dele conseguiria descobri-lo.",
   },
@@ -40,7 +40,7 @@ const THEME_CONTENT: Record<ThemeId, ThemeContent> = {
       "um robozinho curioso piscando luzes em código",
     ],
     page2:
-      "{name} entrou na nave sem pensar duas vezes. Lá dentro, milhares de botões brilhavam como estrelas — e um deles, bem no centro, parecia chamar seu nome.",
+      "{name} entrou na nave sem pensar duas vezes. Lá dentro, milhares de botões brilhavam como estrelas, e um deles, bem no centro, parecia chamar seu nome.",
     page3:
       "Quando {name} apertou o botão, a nave decolou rumo a um planeta que nenhum mapa jamais havia registrado.",
   },
@@ -57,7 +57,7 @@ const THEME_CONTENT: Record<ThemeId, ThemeContent> = {
       "um papagaio falante pousando no mastro do navio",
     ],
     page2:
-      "{name} desenrolou o mapa com cuidado. As linhas antigas desenhavam um caminho entre recifes e ilhas — e todas levavam ao mesmo X dourado.",
+      "{name} desenrolou o mapa com cuidado. As linhas antigas desenhavam um caminho entre recifes e ilhas, e todas levavam ao mesmo X dourado.",
     page3:
       "Com a bússola em mãos, {name} soube que aquela seria a aventura mais emocionante de todas.",
   },
@@ -76,7 +76,7 @@ const THEME_CONTENT: Record<ThemeId, ThemeContent> = {
     page2:
       "{name} seguiu as luzinhas até um portal que brilhava entre duas árvores antigas. Do outro lado, um mundo inteiro parecia esperar por ele.",
     page3:
-      "Foi então que {name} descobriu: a verdadeira magia daquele lugar despertava com coragem — e ele tinha de sobra.",
+      "Foi então que {name} descobriu: a verdadeira magia daquele lugar despertava com coragem, e ele tinha de sobra.",
   },
   animais: {
     label: "Animais",
@@ -93,7 +93,7 @@ const THEME_CONTENT: Record<ThemeId, ThemeContent> = {
     page2:
       "{name} seguiu o coelho até um círculo de pedras onde os animais da floresta já se reuniam. Todos ficaram em silêncio quando perceberam que tinham visita.",
     page3:
-      "Foi então que a coruja mais velha falou: apenas alguém especial poderia ajudá-los — e todos concordaram que {name} era exatamente quem procuravam.",
+      "Foi então que a coruja mais velha falou: apenas alguém especial poderia ajudá-los, e todos concordaram que {name} era exatamente quem procuravam.",
   },
   "fundo-do-mar": {
     label: "Fundo do Mar",
@@ -215,7 +215,7 @@ export function generateMockStoryPreview(session: StorySession): StoryPreview {
 
   const intro = `A aventura de ${name} está prestes a começar em ${theme.worldDescription}.`;
 
-  const page1 = `Naquela manhã, ${name} ${opener}. Tudo começou quando ${name} encontrou ${scene}, bem no meio do caminho — e soube, ali mesmo, que aquele não seria um dia comum.`;
+  const page1 = `Naquela manhã, ${name} ${opener}. Tudo começou quando ${name} encontrou ${scene}, bem no meio do caminho, e soube, ali mesmo, que aquele não seria um dia comum.`;
   const page2 = theme.page2.replaceAll("{name}", name);
   const page3 = theme.page3.replaceAll("{name}", name);
 

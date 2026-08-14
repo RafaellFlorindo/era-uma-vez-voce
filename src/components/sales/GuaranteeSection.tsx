@@ -3,7 +3,7 @@ import { Container } from "@/components/ui/Container";
 
 // PLACEHOLDER: substituir pelo texto oficial da política de garantia/reembolso.
 const guaranteeText =
-  "[Texto da política de garantia a ser definido — ex: prazo de satisfação, condições de reembolso e como solicitar.]";
+  "[Inserir aqui a política oficial: prazo de satisfação, condições de reembolso e como solicitar.]";
 
 export function GuaranteeSection() {
   return (

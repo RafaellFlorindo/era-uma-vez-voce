@@ -17,7 +17,7 @@ const fredoka = Fredoka({
 export const metadata: Metadata = {
   title: "Era Uma Vez Você | Seu filho, o herói da própria história",
   description:
-    "Transforme seu filho no personagem principal de uma aventura criada especialmente para ele — com seu nome, seu rosto e tudo aquilo que ele mais ama.",
+    "Um livro infantil criado do zero com o nome, o rosto e o jeito do seu filho. Ele vira o protagonista da aventura que mais ama.",
 };
 
 export const viewport: Viewport = {

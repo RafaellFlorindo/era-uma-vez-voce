@@ -56,6 +56,12 @@ export async function generateStoryText(session: StorySession): Promise<Generate
 
 Escreva uma história curta em que essa criança é a protagonista e vive uma aventura mágica dentro do tema informado. A criança deve ser corajosa e a história deve ter um tom acolhedor, positivo e apropriado para a idade dela.
 
+Regras de escrita obrigatórias:
+- Nunca use travessão (—) nem meia-risca (–). Use vírgula, ponto ou dois-pontos no lugar.
+- Não use pontos de exclamação.
+- Use aspas retas simples caso precise de aspas.
+- Escreva de forma simples e concreta, como um livro infantil de verdade.
+
 Responda em JSON com o formato exato:
 {"title": "título curto e cativante da história", "intro": "uma frase de efeito sobre a aventura", "pages": ["texto da página 1 (2-3 frases)", "texto da página 2 (2-3 frases)", "texto da página 3 (2-3 frases)"]}`,
           },

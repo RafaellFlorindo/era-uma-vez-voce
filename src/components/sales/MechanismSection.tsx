@@ -17,6 +17,7 @@ export function MechanismSection() {
         <SectionTitle
           eyebrow="Nosso mecanismo exclusivo"
           title="Não trocamos apenas o nome dentro de uma história pronta."
+          subtitle="A maioria dos livros personalizados troca o nome e pronto. O nosso monta a história inteira em cima de quem seu filho é."
         />
 
         <div className="mx-auto mt-12 flex max-w-3xl flex-col items-center gap-6">
@@ -45,9 +46,8 @@ export function MechanismSection() {
           </div>
 
           <p className="mt-4 max-w-xl text-center text-base text-ink-soft">
-            Cada detalhe fornecido pelos pais influencia o personagem, o
-            universo e a narrativa — a história muda de verdade de criança
-            para criança.
+            Cada detalhe que você conta muda o personagem, o mundo e o rumo da
+            aventura. Duas crianças nunca recebem a mesma história.
           </p>
         </div>
       </Container>

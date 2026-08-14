@@ -19,8 +19,12 @@ export function FinalCtaSection({ onStart }: FinalCtaSectionProps) {
       <Container>
         <div className="mx-auto flex max-w-xl flex-col items-center text-center">
           <h2 className="font-display text-2xl font-semibold text-white sm:text-3xl">
-            Toda criança merece viver uma história em que ela é o herói.
+            Toda criança merece se ver como o herói da própria história.
           </h2>
+          <p className="mt-4 text-base leading-relaxed text-white/80">
+            Daqui a alguns anos ele não vai lembrar do brinquedo que ganhou.
+            Vai lembrar da noite em que descobriu que a história era sobre ele.
+          </p>
           <Button size="lg" variant="primary" className="mt-7" onClick={handleClick}>
             Criar a história do meu filho
           </Button>

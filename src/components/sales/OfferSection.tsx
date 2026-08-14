@@ -46,11 +46,11 @@ export function OfferSection({ childName }: OfferSectionProps) {
       <Container>
         <div className="mx-auto max-w-lg text-center">
           <h2 className="font-display text-2xl font-semibold text-ink sm:text-3xl">
-            E essa foi apenas a primeira página.
+            E isso foi só a primeira página.
           </h2>
           <p className="mt-3 text-base text-ink-soft sm:text-lg">
-            A aventura {childName ? `de ${childName}` : "do seu filho"} está
-            apenas começando.
+            Leve a aventura completa {childName ? `de ${childName}` : "do seu filho"} para
+            casa hoje, com todas as ilustrações e a narração para ouvir antes de dormir.
           </p>
         </div>
 

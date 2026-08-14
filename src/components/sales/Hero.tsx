@@ -29,17 +29,17 @@ export const Hero = forwardRef<HTMLElement, HeroProps>(function Hero({ onStart }
         <div className="mx-auto flex max-w-3xl flex-col items-center text-center">
           <span className="mb-5 inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-primary-dark">
             <Sparkles className="h-3.5 w-3.5" />
-            Uma história feita só para ele
+            Um livro que só existe para ele
           </span>
 
           <h1 className="font-display text-3xl font-semibold leading-[1.15] text-ink sm:text-4xl md:text-5xl">
-            Seu filho nunca mais vai ouvir uma história do mesmo jeito.
+            O dia em que seu filho descobre que o herói da história é ele.
           </h1>
 
           <p className="mt-5 max-w-xl text-base leading-relaxed text-ink-soft sm:text-lg">
-            Transforme seu filho no personagem principal de uma aventura criada
-            especialmente para ele — com seu nome, seu rosto e tudo aquilo que
-            ele mais ama.
+            Um livro criado do zero com o nome dele, o rosto dele, o jeitinho
+            dele e o mundo que ele mais ama. Nenhuma outra criança vai ter uma
+            história igual.
           </p>
 
           <div className="mt-8 flex flex-col items-center gap-3">
@@ -48,7 +48,7 @@ export const Hero = forwardRef<HTMLElement, HeroProps>(function Hero({ onStart }
               <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5" />
             </Button>
             <span className="text-sm text-ink-soft">
-              Leva menos de 2 minutos para começar.
+              Leva 2 minutos. Você vê a prévia antes de decidir.
             </span>
           </div>
         </div>

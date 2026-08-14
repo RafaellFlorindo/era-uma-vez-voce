@@ -11,7 +11,10 @@ export function DemoSection() {
   return (
     <section className="py-14 sm:py-20">
       <Container>
-        <SectionTitle title="Imagine a reação dele ao descobrir que a história é sobre ele." />
+        <SectionTitle
+          title="A carinha dele quando percebe que a história é sobre ele."
+          subtitle="É o mesmo livro que ele vai pedir para ouvir de novo toda noite."
+        />
 
         <div className="mx-auto mt-10 max-w-3xl">
           <div className="overflow-hidden rounded-card bg-white shadow-xl shadow-ink/10">
