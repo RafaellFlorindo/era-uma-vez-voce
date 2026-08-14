@@ -160,8 +160,6 @@ export const PersonalizationSection = forwardRef<HTMLElement, PersonalizationSec
                 {step === 4 && (
                   <StepStyle
                     childName={session.childName}
-                    theme={session.theme}
-                    photoDataUrl={session.photoDataUrl}
                     onBack={() => goToStep(3)}
                     onSubmit={handleStyleSubmit}
                   />
@@ -393,14 +391,10 @@ function StepPersonality({
 
 function StepStyle({
   childName,
-  theme,
-  photoDataUrl,
   onBack,
   onSubmit,
 }: {
   childName: string;
-  theme?: (typeof themeOptions)[number]["id"];
-  photoDataUrl?: string;
   onBack: () => void;
   onSubmit: (style: (typeof visualStyleOptions)[number]["id"]) => void;
 }) {
@@ -409,7 +403,7 @@ function StepStyle({
       <label className="text-center font-display text-xl font-semibold text-ink sm:text-2xl">
         Qual estilo combina mais com a história {childName ? `de ${childName}` : "dele(a)"}?
       </label>
-      <StyleCarousel theme={theme} photoDataUrl={photoDataUrl} onSelect={onSubmit} />
+      <StyleCarousel onSelect={onSubmit} />
       <BackButton onClick={onBack} />
     </div>
   );

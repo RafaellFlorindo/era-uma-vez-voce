@@ -3,18 +3,15 @@
 import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import { StyledPhotoCover } from "@/components/personalization/StyledPhotoCover";
 import { visualStyleOptions } from "@/components/personalization/wizardOptions";
-import { ThemeId, VisualStyleId } from "@/types/story";
+import { VisualStyleId } from "@/types/story";
 import { cn } from "@/lib/utils";
 
 interface StyleCarouselProps {
-  theme?: ThemeId;
-  photoDataUrl?: string;
   onSelect: (style: VisualStyleId) => void;
 }
 
-export function StyleCarousel({ theme, photoDataUrl, onSelect }: StyleCarouselProps) {
+export function StyleCarousel({ onSelect }: StyleCarouselProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const active = visualStyleOptions[activeIndex];
 
@@ -35,12 +32,12 @@ export function StyleCarousel({ theme, photoDataUrl, onSelect }: StyleCarouselPr
         </button>
 
         <div className="overflow-hidden rounded-card shadow-lg">
-          <StyledPhotoCover
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
             key={active.id}
-            photoDataUrl={photoDataUrl}
-            theme={theme}
-            visualStyle={active.id}
-            className="animate-fade-in-up"
+            src={`/styles/${active.id}.png`}
+            alt={`Exemplo do estilo ${active.label}`}
+            className="aspect-[3/4] w-full animate-fade-in-up object-cover"
           />
         </div>
 
@@ -54,7 +51,10 @@ export function StyleCarousel({ theme, photoDataUrl, onSelect }: StyleCarouselPr
         </button>
       </div>
 
-      <p className="font-display text-base font-semibold text-ink">{active.label}</p>
+      <div className="text-center">
+        <p className="font-display text-base font-semibold text-ink">{active.label}</p>
+        <p className="text-xs text-ink-soft">Exemplo ilustrativo do estilo</p>
+      </div>
 
       <div className="flex items-center gap-2">
         {visualStyleOptions.map((style, index) => (
