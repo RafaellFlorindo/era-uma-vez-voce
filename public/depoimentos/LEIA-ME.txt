@@ -1,0 +1,11 @@
+Fotos dos depoimentos reais.
+
+Salve aqui com estes nomes (quadradas, ex: 400x400):
+  depoimento-1.jpg
+  depoimento-2.jpg
+  depoimento-3.jpg
+
+Os textos, nomes e contextos ficam em: src/config/testimonials.ts
+
+IMPORTANTE: use apenas depoimentos e fotos reais, com autorização de quem
+aparece. Enquanto não houver, os campos ficam com placeholder visível.
