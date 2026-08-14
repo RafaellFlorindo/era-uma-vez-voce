@@ -185,7 +185,7 @@ function PageBlock({
 
   return (
     <div className="overflow-hidden rounded-xl border border-ink/10 bg-cream">
-      <div className="relative aspect-video w-full bg-ink/5">
+      <div className="relative aspect-[4/3] w-full bg-ink/5">
         {imageStatus !== "error" && (
           // eslint-disable-next-line @next/next/no-img-element
           <img
