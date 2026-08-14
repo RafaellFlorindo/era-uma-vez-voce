@@ -5,7 +5,7 @@ import { ImageOff, Lock, Loader2, Pause, Play, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { StyledPhotoCover } from "@/components/personalization/StyledPhotoCover";
 import { fetchAiNarration } from "@/services/story/aiStoryClient";
-import { buildPageImageUrl } from "@/services/story/pollinationsImage";
+import { getTemplatePageUrl } from "@/services/story/previewTemplates";
 import { trackEvent } from "@/lib/analytics";
 import { StorySession, StoryPreview } from "@/types/story";
 
@@ -97,7 +97,7 @@ export function StoryPreviewSection({
               key={index}
               label={`Página ${index + 1}`}
               content={page}
-              imageUrl={buildPageImageUrl(session, index)}
+              imageUrl={getTemplatePageUrl(session.theme, index)}
               getAudio={() => getAudio(index)}
             />
           ))}

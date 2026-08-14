@@ -21,7 +21,7 @@ import {
 import { useStorySessionStore } from "@/store/storySession";
 import { generateMockStoryPreview } from "@/services/story/mockStoryGenerator";
 import { fetchAiStoryText } from "@/services/story/aiStoryClient";
-import { buildCoverImageUrl } from "@/services/story/pollinationsImage";
+import { getTemplateCoverUrl } from "@/services/story/previewTemplates";
 import { trackEvent } from "@/lib/analytics";
 import { handleInitiateCheckout } from "@/lib/checkout";
 import { cn } from "@/lib/utils";
@@ -180,7 +180,7 @@ export const PersonalizationSection = forwardRef<HTMLElement, PersonalizationSec
               <StoryPreviewSection
                 session={session}
                 preview={preview}
-                aiImageUrl={buildCoverImageUrl(session)}
+                aiImageUrl={getTemplateCoverUrl(session.theme)}
                 generatedByAi={usedRealAi}
                 onUnlock={handleUnlock}
               />
