@@ -1,0 +1,22 @@
+<svg viewBox="0 0 400 520" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg3" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4fa3b9"/>
+      <stop offset="100%" stop-color="#2c5f6f"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="520" rx="18" fill="url(#bg3)"/>
+  <path d="M0 380 Q100 340 200 380 T400 380 V520 H0 Z" fill="#f2b94f" opacity="0.9"/>
+  <g transform="translate(140,120)">
+    <rect x="55" y="0" width="10" height="140" fill="#6b5c4a"/>
+    <path d="M65 10 Q130 40 65 70 Z" fill="#fffaf3"/>
+  </g>
+  <g transform="translate(120,260)">
+    <ellipse cx="80" cy="150" rx="75" ry="90" fill="#e8734a"/>
+    <circle cx="80" cy="55" r="50" fill="#f2c9a0"/>
+    <path d="M30 40 Q80 0 130 40 L130 55 Q80 25 30 55 Z" fill="#2e2418"/>
+    <circle cx="60" cy="55" r="5" fill="#2e2418"/>
+    <circle cx="100" cy="55" r="5" fill="#2e2418"/>
+  </g>
+  <text x="200" y="470" text-anchor="middle" font-family="Georgia, serif" font-size="26" fill="#fffaf3" font-weight="bold">Tesouro da Ilha Perdida</text>
+</svg>

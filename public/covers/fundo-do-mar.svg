@@ -1,0 +1,19 @@
+<svg viewBox="0 0 400 520" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg6" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4fa3b9"/>
+      <stop offset="100%" stop-color="#144a5c"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="520" rx="18" fill="url(#bg6)"/>
+  <circle cx="330" cy="80" r="8" fill="#fffaf3" opacity="0.5"/>
+  <circle cx="300" cy="140" r="5" fill="#fffaf3" opacity="0.4"/>
+  <circle cx="350" cy="180" r="6" fill="#fffaf3" opacity="0.4"/>
+  <g transform="translate(120,260)">
+    <ellipse cx="80" cy="140" rx="80" ry="70" fill="#e8734a"/>
+    <path d="M150 130 L190 100 L190 170 Z" fill="#e8734a"/>
+    <circle cx="60" cy="120" r="6" fill="#2e2418"/>
+    <path d="M60 90 Q100 60 130 90" stroke="#f2b94f" stroke-width="8" fill="none" stroke-linecap="round"/>
+  </g>
+  <text x="200" y="470" text-anchor="middle" font-family="Georgia, serif" font-size="26" fill="#fffaf3" font-weight="bold">Reino do Fundo do Mar</text>
+</svg>

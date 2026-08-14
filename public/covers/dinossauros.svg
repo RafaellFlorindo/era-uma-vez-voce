@@ -1,0 +1,19 @@
+<svg viewBox="0 0 400 520" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7fb99a"/>
+      <stop offset="100%" stop-color="#3f7d5c"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="520" rx="18" fill="url(#bg)"/>
+  <circle cx="320" cy="80" r="40" fill="#f2b94f"/>
+  <path d="M40 420 Q120 340 200 420 T360 420 V520 H40 Z" fill="#2c5f6f" opacity="0.5"/>
+  <g transform="translate(90,260)">
+    <ellipse cx="90" cy="140" rx="90" ry="55" fill="#4c8c6b"/>
+    <circle cx="30" cy="70" r="55" fill="#4c8c6b"/>
+    <circle cx="12" cy="55" r="7" fill="#2e2418"/>
+    <path d="M0 20 L10 -20 L25 15 L40 -25 L50 20 Z" fill="#3f7d5c"/>
+    <path d="M170 180 Q210 200 230 170" stroke="#4c8c6b" stroke-width="18" fill="none" stroke-linecap="round"/>
+  </g>
+  <text x="200" y="470" text-anchor="middle" font-family="Georgia, serif" font-size="26" fill="#fffaf3" font-weight="bold">Vale dos Dinossauros</text>
+</svg>

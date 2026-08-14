@@ -1,0 +1,24 @@
+<svg viewBox="0 0 400 520" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2c5f6f"/>
+      <stop offset="100%" stop-color="#16303a"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="520" rx="18" fill="url(#bg2)"/>
+  <circle cx="80" cy="90" r="4" fill="#fff"/>
+  <circle cx="140" cy="60" r="3" fill="#fff"/>
+  <circle cx="330" cy="120" r="4" fill="#fff"/>
+  <circle cx="300" cy="60" r="3" fill="#fff"/>
+  <circle cx="60" cy="180" r="3" fill="#fff"/>
+  <circle cx="230" cy="90" r="55" fill="#f2b94f"/>
+  <circle cx="215" cy="80" r="10" fill="#2c5f6f" opacity="0.4"/>
+  <g transform="translate(120,270)">
+    <ellipse cx="80" cy="150" rx="70" ry="90" fill="#fffaf3"/>
+    <circle cx="80" cy="60" r="55" fill="#e8734a"/>
+    <rect x="35" y="35" width="90" height="45" rx="22" fill="#fffaf3" opacity="0.85"/>
+    <circle cx="60" cy="55" r="6" fill="#2e2418"/>
+    <circle cx="100" cy="55" r="6" fill="#2e2418"/>
+  </g>
+  <text x="200" y="470" text-anchor="middle" font-family="Georgia, serif" font-size="26" fill="#fffaf3" font-weight="bold">Segredo das Estrelas</text>
+</svg>
