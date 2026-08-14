@@ -14,6 +14,7 @@ interface StoryPreviewSectionProps {
   photoDataUrl?: StorySession["photoDataUrl"];
   theme?: StorySession["theme"];
   visualStyle?: StorySession["visualStyle"];
+  aiImageUrl?: string;
   generatedByAi?: boolean;
   onUnlock: () => void;
 }
@@ -57,6 +58,7 @@ export function StoryPreviewSection({
   photoDataUrl,
   theme,
   visualStyle,
+  aiImageUrl,
   generatedByAi,
   onUnlock,
 }: StoryPreviewSectionProps) {
@@ -80,6 +82,7 @@ export function StoryPreviewSection({
               photoDataUrl={photoDataUrl}
               theme={theme}
               visualStyle={visualStyle}
+              aiImageUrl={aiImageUrl}
               title={preview.title}
               className="max-w-[220px]"
             />
