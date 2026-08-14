@@ -1,0 +1,12 @@
+Arquivos do livro de exemplo (seção "A carinha dele quando percebe...").
+
+Salve os arquivos aqui com EXATAMENTE estes nomes:
+
+  capa.png              -> capa do livro de exemplo (retrato, 3:4, ex: 1200x1600)
+  pagina-1.png          -> ilustração da página 1 (paisagem, 4:3, ex: 1600x1200)
+  pagina-2.png          -> ilustração da página 2 (paisagem, 4:3)
+  pagina-3.png          -> ilustração da página 3 (paisagem, 4:3)
+  narracao-gabriel.mp3  -> narração fixa do livro de exemplo
+
+Os textos e o título ficam em: src/config/demo.ts
+Enquanto um arquivo não existir, a página mostra um placeholder no lugar.
