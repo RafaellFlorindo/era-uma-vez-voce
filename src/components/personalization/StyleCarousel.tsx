@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { visualStyleOptions } from "@/components/personalization/wizardOptions";
@@ -31,13 +32,14 @@ export function StyleCarousel({ onSelect }: StyleCarouselProps) {
           <ChevronLeft className="h-5 w-5" />
         </button>
 
-        <div className="overflow-hidden rounded-card shadow-lg">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+        <div className="relative aspect-[3/4] w-full overflow-hidden rounded-card shadow-lg">
+          <Image
             key={active.id}
-            src={`/styles/${active.id}.png`}
+            src={`/styles/${active.id}.jpg`}
             alt={`Exemplo do estilo ${active.label}`}
-            className="aspect-[3/4] w-full animate-fade-in-up object-cover"
+            fill
+            sizes="240px"
+            className="animate-fade-in-up object-cover"
           />
         </div>
 

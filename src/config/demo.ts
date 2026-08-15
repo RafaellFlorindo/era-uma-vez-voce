@@ -14,7 +14,7 @@ export const demoBook = {
   audioUrl: "/demo/narracao-gabriel.mp3",
 
   cover: {
-    imageUrl: "/demo/capa.png",
+    imageUrl: "/demo/capa.jpg",
     alt: "Capa do livro de exemplo do Gabriel",
   },
 

@@ -81,7 +81,7 @@ function HeroTransformDemo() {
 }
 
 function PolaroidCard({ label, tone }: { label: string; tone: "photo" | "character" }) {
-  const src = tone === "photo" ? "/hero/gabriel-foto.png" : "/hero/gabriel-heroi.png";
+  const src = tone === "photo" ? "/hero/gabriel-foto.jpg" : "/hero/gabriel-heroi.jpg";
 
   return (
     <div className="w-40 rotate-[-2deg] rounded-2xl bg-white p-2.5 shadow-xl shadow-ink/10 transition-transform hover:rotate-0 sm:w-44">
