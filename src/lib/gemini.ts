@@ -87,6 +87,77 @@ Responda em JSON com o formato exato:
   return JSON.parse(text) as GeneratedStory;
 }
 
+/**
+ * Escreve a história no tamanho que foi comprado.
+ *
+ * As 3 páginas da prévia entram como abertura obrigatória: o comprador já
+ * leu aquilo e pagou por causa daquilo, então o livro não pode começar
+ * diferente do que ele viu.
+ */
+export async function generateFullStoryText(
+  session: StorySession,
+  pageCount: number,
+  openingPages: string[],
+): Promise<GeneratedStory> {
+  const ai = getClient();
+  const dna = buildDnaPrompt(session);
+  const remaining = Math.max(0, pageCount - openingPages.length);
+
+  if (remaining === 0) {
+    return { title: "", intro: "", pages: openingPages.slice(0, pageCount) };
+  }
+
+  const response = await ai.models.generateContent({
+    model: aiConfig.textModel,
+    contents: [
+      {
+        role: "user",
+        parts: [
+          {
+            text: `Você é um autor de histórias infantis encantadoras em português do Brasil. ${dna}
+
+A história desta criança já começou assim:
+
+${openingPages.map((page, index) => `Página ${index + 1}: ${page}`).join("\n\n")}
+
+Continue exatamente de onde parou e escreva as próximas ${remaining} páginas, fechando a aventura com um final feliz e acolhedor na última página. Mantenha o mesmo tom e o mesmo mundo.
+
+Regras de escrita obrigatórias:
+- Nunca use travessão (—) nem meia-risca (–). Use vírgula, ponto ou dois-pontos no lugar.
+- Não use pontos de exclamação.
+- Use aspas retas simples caso precise de aspas.
+- Cada página deve ter de 2 a 3 frases, simples e concretas.
+
+Responda em JSON com o formato exato:
+{"pages": [${Array.from({ length: remaining }, (_, i) => `"texto da página ${openingPages.length + i + 1}"`).join(", ")}]}`,
+          },
+        ],
+      },
+    ],
+    config: {
+      responseMimeType: "application/json",
+      responseSchema: {
+        type: "object",
+        properties: {
+          pages: {
+            type: "array",
+            items: { type: "string" },
+            minItems: remaining,
+            maxItems: remaining,
+          },
+        },
+        required: ["pages"],
+      },
+    },
+  });
+
+  const text = response.text;
+  if (!text) throw new Error("Resposta vazia da Gemini API ao continuar a história.");
+
+  const { pages } = JSON.parse(text) as { pages: string[] };
+  return { title: "", intro: "", pages: [...openingPages, ...pages].slice(0, pageCount) };
+}
+
 export async function generateCharacterImage(
   session: StorySession,
   photoBase64: string,
