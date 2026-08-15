@@ -20,15 +20,15 @@ export const demoBook = {
 
   pages: [
     {
-      imageUrl: "/demo/pagina-1.png",
+      imageUrl: "/demo/pagina-1.jpg",
       text: "Naquela manhã, Gabriel ainda não sabia que estava prestes a encontrar algo que nenhuma outra criança havia visto antes.",
     },
     {
-      imageUrl: "/demo/pagina-2.png",
+      imageUrl: "/demo/pagina-2.jpg",
       text: "Ele seguiu as pegadas com cuidado, até chegar a uma clareira onde um dinossauro gigante dormia tranquilo.",
     },
     {
-      imageUrl: "/demo/pagina-3.png",
+      imageUrl: "/demo/pagina-3.jpg",
       text: "Foi ali que Gabriel entendeu: aquele vale guardava um segredo, e só um coração corajoso como o dele conseguiria descobrir.",
     },
   ],
