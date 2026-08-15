@@ -1,21 +1,19 @@
-import { offer } from "@/config/offer";
 import { trackEvent } from "@/lib/analytics";
 import { appendUtmParams } from "@/lib/utm";
 
 /**
- * Abstração para o início do checkout. Hoje apenas redireciona para a URL
- * configurada em `offer.ts` preservando UTMs; futuramente pode disparar
- * criação de sessão de pagamento real sem alterar os call sites.
+ * Abstração para o início do checkout. Redireciona para a URL de checkout
+ * da Cakto passada pelo chamador (uma por faixa de páginas), preservando
+ * UTMs.
  */
-export function handleInitiateCheckout(context: Record<string, unknown> = {}) {
+export function handleInitiateCheckout(checkoutUrl: string, context: Record<string, unknown> = {}) {
   trackEvent("initiate_checkout", context);
 
-  if (!offer.checkoutUrl) {
-     
-    console.warn("[checkout] checkoutUrl não configurada em src/config/offer.ts");
+  if (!checkoutUrl) {
+    console.warn("[checkout] checkoutUrl vazia — verifique src/config/offer.ts");
     return;
   }
 
-  const url = appendUtmParams(offer.checkoutUrl);
+  const url = appendUtmParams(checkoutUrl);
   window.location.href = url;
 }

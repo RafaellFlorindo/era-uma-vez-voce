@@ -24,6 +24,7 @@ import { fetchAiStoryText } from "@/services/story/aiStoryClient";
 import { getTemplateCoverUrl } from "@/services/story/previewTemplates";
 import { trackEvent } from "@/lib/analytics";
 import { handleInitiateCheckout } from "@/lib/checkout";
+import { pageTiers, DEFAULT_TIER_INDEX } from "@/config/offer";
 import { cn } from "@/lib/utils";
 import { ChildGender, StoryPreview } from "@/types/story";
 
@@ -112,7 +113,13 @@ export const PersonalizationSection = forwardRef<HTMLElement, PersonalizationSec
     }
 
     function handleUnlock() {
-      handleInitiateCheckout({ childName: session.childName, source: "preview_unlock" });
+      const defaultTier = pageTiers[DEFAULT_TIER_INDEX];
+      handleInitiateCheckout(defaultTier.checkoutUrl, {
+        childName: session.childName,
+        source: "preview_unlock",
+        pages: defaultTier.pages,
+        price: defaultTier.price,
+      });
     }
 
     return (

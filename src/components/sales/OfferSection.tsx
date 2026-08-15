@@ -119,7 +119,7 @@ export function OfferSection({ childName }: OfferSectionProps) {
               size="lg"
               className="mt-5 w-full"
               onClick={() =>
-                handleInitiateCheckout({
+                handleInitiateCheckout(selectedTier.checkoutUrl, {
                   childName,
                   price: selectedTier.price,
                   pages: selectedTier.pages,
