@@ -118,13 +118,7 @@ export function OfferSection({ childName }: OfferSectionProps) {
             <Button
               size="lg"
               className="mt-5 w-full"
-              onClick={() =>
-                handleInitiateCheckout(selectedTier.checkoutUrl, {
-                  childName,
-                  price: selectedTier.price,
-                  pages: selectedTier.pages,
-                })
-              }
+              onClick={() => handleInitiateCheckout(selectedTier, { childName })}
             >
               {ctaLabel}
             </Button>

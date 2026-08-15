@@ -114,11 +114,9 @@ export const PersonalizationSection = forwardRef<HTMLElement, PersonalizationSec
 
     function handleUnlock() {
       const defaultTier = pageTiers[DEFAULT_TIER_INDEX];
-      handleInitiateCheckout(defaultTier.checkoutUrl, {
+      handleInitiateCheckout(defaultTier, {
         childName: session.childName,
         source: "preview_unlock",
-        pages: defaultTier.pages,
-        price: defaultTier.price,
       });
     }
 

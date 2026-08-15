@@ -4,24 +4,23 @@ export interface PageTier {
   price: number;
   /** Rótulo curto opcional exibido no card (ex: "Mais escolhido"). */
   badge?: string;
-  /** Link de checkout da Cakto para essa oferta específica. */
-  checkoutUrl: string;
+  /** ID da oferta na Cakto (o trecho final de pay.cakto.com.br/{offerId}). */
+  offerId: string;
 }
 
 // Preço base de 6 páginas, subindo R$ 5,00 a cada faixa.
 // Produto e ofertas criados na Cakto (produto "Era Uma Vez Você",
 // id 570d07bd-715d-4a20-9359-323b3a20034a).
 export const pageTiers: PageTier[] = [
-  { pages: 6, price: 29.9, checkoutUrl: "https://pay.cakto.com.br/u4k5xbk" },
-  {
-    pages: 12,
-    price: 34.9,
-    badge: "Mais escolhido",
-    checkoutUrl: "https://pay.cakto.com.br/bts3r5t",
-  },
-  { pages: 18, price: 39.9, checkoutUrl: "https://pay.cakto.com.br/mhs6qrc" },
-  { pages: 24, price: 44.9, checkoutUrl: "https://pay.cakto.com.br/9r4sba6" },
+  { pages: 6, price: 29.9, offerId: "u4k5xbk" },
+  { pages: 12, price: 34.9, badge: "Mais escolhido", offerId: "bts3r5t" },
+  { pages: 18, price: 39.9, offerId: "mhs6qrc" },
+  { pages: 24, price: 44.9, offerId: "9r4sba6" },
 ];
+
+export function caktoCheckoutUrl(offerId: string): string {
+  return `https://pay.cakto.com.br/${offerId}`;
+}
 
 export const DEFAULT_TIER_INDEX = 1;
 
