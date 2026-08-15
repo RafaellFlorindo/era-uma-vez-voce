@@ -18,12 +18,12 @@ export function DemoSection() {
 
         <div className="mx-auto mt-10 max-w-3xl overflow-hidden rounded-card bg-white shadow-xl shadow-ink/10">
           <div className="grid grid-cols-1 sm:grid-cols-[0.9fr_1.1fr]">
-            <div className="flex items-center justify-center bg-secondary p-6 sm:p-8">
+            <div className="relative aspect-[3/4] bg-secondary sm:aspect-auto sm:h-full">
               <ImageWithPlaceholder
                 src={demoBook.cover.imageUrl}
                 alt={demoBook.cover.alt}
                 placeholderLabel="Capa de exemplo"
-                className="aspect-[3/4] w-full max-w-[220px] rounded-xl shadow-lg"
+                className="absolute inset-0"
               />
             </div>
 
