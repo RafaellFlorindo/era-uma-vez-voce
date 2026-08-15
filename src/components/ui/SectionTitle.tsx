@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { Reveal } from "@/components/ui/Reveal";
 
 interface SectionTitleProps {
   eyebrow?: string;
@@ -10,16 +11,25 @@ interface SectionTitleProps {
 
 export function SectionTitle({ eyebrow, title, subtitle, align = "center", className }: SectionTitleProps) {
   return (
-    <div className={cn("max-w-2xl", align === "center" ? "mx-auto text-center" : "text-left", className)}>
+    <Reveal className={cn("max-w-2xl", align === "center" ? "mx-auto text-center" : "text-left", className)}>
       {eyebrow && (
-        <span className="mb-3 inline-block rounded-full bg-accent/20 px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-primary-dark">
+        <span
+          className={cn(
+            "mb-4 inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-primary-dark",
+            align === "center" ? "justify-center" : "",
+          )}
+        >
+          <span aria-hidden className="h-px w-6 bg-primary/40" />
           {eyebrow}
+          <span aria-hidden className="h-px w-6 bg-primary/40" />
         </span>
       )}
-      <h2 className="font-display text-2xl font-semibold leading-tight text-ink sm:text-3xl md:text-4xl">
+      <h2 className="font-display text-[1.75rem] leading-[1.12] font-semibold text-balance text-ink sm:text-4xl md:text-[2.75rem]">
         {title}
       </h2>
-      {subtitle && <p className="mt-3 text-base text-ink-soft sm:text-lg">{subtitle}</p>}
-    </div>
+      {subtitle && (
+        <p className="mt-4 text-base leading-relaxed text-ink-soft sm:text-lg">{subtitle}</p>
+      )}
+    </Reveal>
   );
 }

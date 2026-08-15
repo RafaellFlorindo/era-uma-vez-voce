@@ -1,23 +1,44 @@
 import type { Metadata, Viewport } from "next";
-import { Geist } from "next/font/google";
-import { Fredoka } from "next/font/google";
+import { Fraunces, Nunito } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+/**
+ * Fraunces é uma serifada macia com eixo "wonk": tem a irregularidade
+ * charmosa de tipografia de livro impresso, sem parecer infantilizada
+ * demais para quem está comprando (o pai, não a criança).
+ */
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
+  subsets: ["latin", "latin-ext"],
+  display: "swap",
 });
 
-const fredoka = Fredoka({
-  variable: "--font-fredoka",
-  subsets: ["latin"],
-  weight: ["500", "600", "700"],
+const nunito = Nunito({
+  variable: "--font-nunito",
+  subsets: ["latin", "latin-ext"],
+  display: "swap",
 });
+
+const SITE_DESCRIPTION =
+  "Um livro infantil criado do zero com o nome, o rosto e o jeito do seu filho. Ele vira o protagonista da aventura que mais ama.";
 
 export const metadata: Metadata = {
   title: "Era Uma Vez Você | Seu filho, o herói da própria história",
-  description:
-    "Um livro infantil criado do zero com o nome, o rosto e o jeito do seu filho. Ele vira o protagonista da aventura que mais ama.",
+  description: SITE_DESCRIPTION,
+  // Sem OG tags o link compartilhado em anúncio e WhatsApp aparece cru,
+  // o que derruba o clique antes mesmo da página abrir.
+  openGraph: {
+    title: "O dia em que seu filho descobre que o herói da história é ele",
+    description: SITE_DESCRIPTION,
+    type: "website",
+    locale: "pt_BR",
+    siteName: "Era Uma Vez Você",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "O dia em que seu filho descobre que o herói da história é ele",
+    description: SITE_DESCRIPTION,
+  },
 };
 
 export const viewport: Viewport = {
@@ -30,7 +51,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="pt-BR"
-      className={`${geistSans.variable} ${fredoka.variable} h-full antialiased`}
+      className={`${fraunces.variable} ${nunito.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-cream text-ink">{children}</body>
     </html>

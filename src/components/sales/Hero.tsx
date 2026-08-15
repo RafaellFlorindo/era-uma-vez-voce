@@ -2,9 +2,10 @@
 
 import { forwardRef } from "react";
 import Image from "next/image";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight, Clock, ShieldCheck, Sparkles, Wand2 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
+import { Reveal } from "@/components/ui/Reveal";
 import { trackEvent } from "@/lib/analytics";
 
 interface HeroProps {
@@ -20,37 +21,54 @@ export const Hero = forwardRef<HTMLElement, HeroProps>(function Hero({ onStart }
   return (
     <section
       ref={ref}
-      className="relative overflow-hidden bg-gradient-to-b from-cream-dark to-cream pt-10 pb-14 sm:pt-16 sm:pb-20"
+      className="relative overflow-hidden bg-gradient-to-b from-cream-dark via-cream to-cream pt-12 pb-16 sm:pt-20 sm:pb-24"
     >
-      <div className="pointer-events-none absolute -top-10 -left-10 h-56 w-56 rounded-full bg-accent/20 blur-3xl" />
-      <div className="pointer-events-none absolute top-40 -right-16 h-64 w-64 rounded-full bg-primary/10 blur-3xl" />
+      {/* Atmosfera: manchas quentes fora de foco, como luz atravessando papel. */}
+      <div className="pointer-events-none absolute -top-24 -left-24 h-[26rem] w-[26rem] rounded-full bg-accent/25 blur-[100px]" />
+      <div className="pointer-events-none absolute top-52 -right-28 h-[30rem] w-[30rem] rounded-full bg-primary/12 blur-[110px]" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/50 to-transparent" />
 
       <Container className="relative">
         <div className="mx-auto flex max-w-3xl flex-col items-center text-center">
-          <span className="mb-5 inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-primary-dark">
-            <Sparkles className="h-3.5 w-3.5" />
-            Um livro que só existe para ele
-          </span>
-
-          <h1 className="font-display text-3xl font-semibold leading-[1.15] text-ink sm:text-4xl md:text-5xl">
-            O dia em que seu filho descobre que o herói da história é ele.
-          </h1>
-
-          <p className="mt-5 max-w-xl text-base leading-relaxed text-ink-soft sm:text-lg">
-            Um livro criado do zero com o nome dele, o rosto dele, o jeitinho
-            dele e o mundo que ele mais ama. Nenhuma outra criança vai ter uma
-            história igual.
-          </p>
-
-          <div className="mt-8 flex flex-col items-center gap-3">
-            <Button size="lg" onClick={handleClick} className="group">
-              Criar a história do meu filho
-              <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5" />
-            </Button>
-            <span className="text-sm text-ink-soft">
-              Leva 2 minutos. Você vê a prévia antes de decidir.
+          <Reveal>
+            <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-cream/80 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-primary-dark shadow-[var(--shadow-sm)] backdrop-blur-sm">
+              <Sparkles className="h-3.5 w-3.5" />
+              Um livro que só existe para ele
             </span>
-          </div>
+          </Reveal>
+
+          <Reveal delay={80}>
+            <h1 className="font-display text-[2.1rem] leading-[1.08] font-semibold text-balance text-ink sm:text-5xl md:text-[3.75rem]">
+              O dia em que seu filho descobre que{" "}
+              <em className="highlight-marker not-italic text-primary-dark">
+                o herói da história é ele
+              </em>
+              .
+            </h1>
+          </Reveal>
+
+          <Reveal delay={160}>
+            <p className="mx-auto mt-7 max-w-xl text-base leading-relaxed text-ink-soft sm:text-lg">
+              Um livro criado do zero com o nome dele, o rosto dele, o jeitinho
+              dele e o mundo que ele mais ama. Nenhuma outra criança vai ter uma
+              história igual.
+            </p>
+          </Reveal>
+
+          <Reveal delay={240}>
+            <div className="mt-9 flex flex-col items-center gap-4">
+              <Button size="lg" onClick={handleClick} className="group w-full sm:w-auto">
+                Criar a história do meu filho
+                <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+              </Button>
+
+              <ul className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[13px] font-medium text-ink-soft">
+                <TrustItem icon={<Clock className="h-3.5 w-3.5" />}>Leva 2 minutos</TrustItem>
+                <TrustItem icon={<Sparkles className="h-3.5 w-3.5" />}>Prévia grátis antes de decidir</TrustItem>
+                <TrustItem icon={<ShieldCheck className="h-3.5 w-3.5" />}>Sem cadastro nem cartão</TrustItem>
+              </ul>
+            </div>
+          </Reveal>
         </div>
 
         <HeroTransformDemo />
@@ -59,43 +77,79 @@ export const Hero = forwardRef<HTMLElement, HeroProps>(function Hero({ onStart }
   );
 });
 
-function HeroTransformDemo() {
+function TrustItem({ icon, children }: { icon: React.ReactNode; children: React.ReactNode }) {
   return (
-    <div className="mx-auto mt-12 flex max-w-2xl flex-col items-center gap-3 sm:mt-16">
-      <div className="flex w-full flex-col items-center gap-4 sm:flex-row sm:justify-center sm:gap-6">
-        <PolaroidCard label="Gabriel" tone="photo" />
-
-        <ArrowRight className="hidden h-6 w-6 shrink-0 rotate-90 text-primary sm:block sm:rotate-0" />
-        <div className="block h-6 w-6 shrink-0 rotate-90 text-primary sm:hidden">
-          <ArrowRight className="h-6 w-6" />
-        </div>
-
-        <PolaroidCard label="Gabriel, o Herói" tone="character" />
-      </div>
-
-      <p className="mt-2 max-w-md text-center font-display text-lg font-medium text-secondary sm:text-xl">
-        &ldquo;Gabriel e a Jornada no Vale dos Dinossauros&rdquo;
-      </p>
-    </div>
+    <li className="inline-flex items-center gap-1.5">
+      <span className="text-success">{icon}</span>
+      {children}
+    </li>
   );
 }
 
-function PolaroidCard({ label, tone }: { label: string; tone: "photo" | "character" }) {
+function HeroTransformDemo() {
+  return (
+    <Reveal delay={320} className="mx-auto mt-14 flex max-w-2xl flex-col items-center sm:mt-20">
+      <div className="flex w-full flex-col items-center gap-5 sm:flex-row sm:justify-center sm:gap-8">
+        <PolaroidCard label="A foto que você envia" tone="photo" tilt="-3deg" />
+
+        <div className="flex shrink-0 flex-col items-center gap-1.5">
+          <span className="flex h-11 w-11 items-center justify-center rounded-full bg-primary/12 text-primary-dark ring-1 ring-primary/20">
+            <Wand2 className="h-5 w-5" />
+          </span>
+          <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-ink-faint">
+            vira
+          </span>
+        </div>
+
+        <PolaroidCard label="O herói do livro dele" tone="character" tilt="2.5deg" featured />
+      </div>
+
+      <p className="mt-8 max-w-md text-center font-display text-lg leading-snug font-medium text-balance text-secondary sm:text-xl">
+        &ldquo;Gabriel e a Jornada no Vale dos Dinossauros&rdquo;
+      </p>
+      <p className="mt-1.5 text-[13px] text-ink-faint">Exemplo real gerado na plataforma</p>
+    </Reveal>
+  );
+}
+
+function PolaroidCard({
+  label,
+  tone,
+  tilt,
+  featured = false,
+}: {
+  label: string;
+  tone: "photo" | "character";
+  tilt: string;
+  featured?: boolean;
+}) {
   const src = tone === "photo" ? "/hero/gabriel-foto.jpg" : "/hero/gabriel-heroi.jpg";
 
   return (
-    <div className="w-40 rotate-[-2deg] rounded-2xl bg-white p-2.5 shadow-xl shadow-ink/10 transition-transform hover:rotate-0 sm:w-44">
+    <figure
+      style={{ rotate: tilt }}
+      className={`relative w-44 rounded-2xl bg-white p-2.5 pb-3 transition-[rotate,box-shadow,scale] duration-500 hover:rotate-0 hover:scale-[1.03] sm:w-52 ${
+        featured ? "shadow-[var(--shadow-lift)] ring-1 ring-accent/40" : "shadow-[var(--shadow-card)]"
+      }`}
+    >
+      {featured && (
+        <span className="absolute -top-2.5 left-1/2 z-10 -translate-x-1/2 rounded-full bg-accent px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-ink shadow-[var(--shadow-sm)]">
+          O livro dele
+        </span>
+      )}
       <div className="relative aspect-[3/4] w-full overflow-hidden rounded-xl bg-cream-dark">
         <Image
           src={src}
           alt={label}
           fill
-          sizes="176px"
+          sizes="(max-width: 640px) 176px, 208px"
           className="object-cover"
           priority={tone === "photo"}
         />
       </div>
-      <p className="mt-2 text-center font-display text-sm font-medium text-ink">{label}</p>
-    </div>
+      <figcaption className="mt-2.5 text-center font-display text-[13px] font-medium text-ink-soft">
+        {label}
+      </figcaption>
+    </figure>
   );
 }
