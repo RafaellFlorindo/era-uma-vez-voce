@@ -121,7 +121,7 @@ export const PersonalizationSection = forwardRef<HTMLElement, PersonalizationSec
     }
 
     return (
-      <section ref={ref} id="criar-historia" className="bg-cream-dark py-14 sm:py-20">
+      <section ref={ref} id="criar-historia" className="paper-panel py-16 sm:py-24">
         <Container>
           <SectionTitle
             title={phase === "preview" ? "Sua história está tomando forma..." : "Vamos criar uma história agora?"}

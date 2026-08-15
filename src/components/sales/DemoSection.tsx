@@ -4,19 +4,24 @@ import { useEffect, useRef, useState } from "react";
 import { Pause, Play } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { SectionTitle } from "@/components/ui/SectionTitle";
+import { Reveal } from "@/components/ui/Reveal";
 import { ImageWithPlaceholder } from "@/components/ui/ImageWithPlaceholder";
 import { demoBook } from "@/config/demo";
 
 export function DemoSection() {
   return (
-    <section className="py-14 sm:py-20">
+    <section className="py-16 sm:py-24">
       <Container>
         <SectionTitle
+          eyebrow="Veja antes de acreditar"
           title="A carinha dele quando percebe que a história é sobre ele."
           subtitle="É o mesmo livro que ele vai pedir para ouvir de novo toda noite."
         />
 
-        <div className="mx-auto mt-10 max-w-3xl overflow-hidden rounded-card bg-white shadow-xl shadow-ink/10">
+        <Reveal
+          delay={100}
+          className="mx-auto mt-12 max-w-3xl overflow-hidden rounded-card bg-white shadow-[var(--shadow-lift)] ring-1 ring-cream-deep"
+        >
           <div className="grid grid-cols-1 sm:grid-cols-[0.9fr_1.1fr]">
             <div className="relative aspect-[3/4] bg-secondary">
               <ImageWithPlaceholder
@@ -28,10 +33,10 @@ export function DemoSection() {
             </div>
 
             <div className="flex flex-col justify-center p-6 sm:p-8">
-              <span className="text-xs font-semibold uppercase tracking-wide text-primary-dark">
+              <span className="inline-flex items-center gap-1.5 self-start rounded-full bg-accent/18 px-2.5 py-1 text-[10px] font-bold tracking-[0.14em] text-primary-dark uppercase">
                 Livro de exemplo
               </span>
-              <p className="mt-2 font-display text-xl font-semibold leading-snug text-ink sm:text-2xl">
+              <p className="mt-3 font-display text-xl leading-snug font-semibold text-balance text-ink sm:text-2xl">
                 {demoBook.title}
               </p>
               <p className="mt-3 text-sm leading-relaxed text-ink-soft">
@@ -55,7 +60,7 @@ export function DemoSection() {
               </div>
             ))}
           </div>
-        </div>
+        </Reveal>
       </Container>
     </section>
   );

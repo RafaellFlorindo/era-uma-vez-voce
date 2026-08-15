@@ -11,7 +11,7 @@ export function LivePreviewCard() {
   const preview = generateLivePreview(session);
 
   return (
-    <div className="mx-auto w-full max-w-xl overflow-hidden rounded-card bg-white shadow-lg shadow-ink/10">
+    <div className="mx-auto w-full max-w-xl overflow-hidden rounded-card bg-white shadow-[var(--shadow-card)] ring-1 ring-cream-deep">
       <div className="flex items-center gap-2 border-b border-ink/10 bg-cream px-4 py-2.5">
         <Sparkles className={cn("h-3.5 w-3.5", preview.ready ? "text-primary" : "text-ink-soft/40")} />
         <span className="text-xs font-semibold uppercase tracking-wide text-ink-soft">

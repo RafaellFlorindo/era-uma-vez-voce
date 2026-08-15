@@ -1,6 +1,7 @@
 import { BookOpenCheck, Compass, PenLine } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { SectionTitle } from "@/components/ui/SectionTitle";
+import { Reveal } from "@/components/ui/Reveal";
 
 const steps = [
   {
@@ -22,7 +23,7 @@ const steps = [
 
 export function HowItWorksSection() {
   return (
-    <section className="py-14 sm:py-20">
+    <section className="py-16 sm:py-24">
       <Container>
         <SectionTitle
           title="Como funciona"
@@ -38,8 +39,12 @@ export function HowItWorksSection() {
 
           <div className="relative grid grid-cols-1 gap-5 sm:grid-cols-3">
             {steps.map(({ icon: Icon, title, description }, index) => (
-              <div key={title} className="flex flex-col items-center text-center">
-                <span className="relative flex h-[104px] w-[104px] items-center justify-center rounded-full border border-ink/5 bg-white shadow-md shadow-ink/5">
+              <Reveal
+                key={title}
+                delay={index * 110}
+                className="flex flex-col items-center text-center"
+              >
+                <span className="relative flex h-[104px] w-[104px] items-center justify-center rounded-full border border-cream-deep bg-white shadow-[var(--shadow-card)]">
                   <span className="flex h-16 w-16 items-center justify-center rounded-full bg-accent/20">
                     <Icon className="h-8 w-8 text-primary-dark" />
                   </span>
@@ -51,7 +56,7 @@ export function HowItWorksSection() {
                 <p className="mt-2 max-w-[15rem] text-sm leading-relaxed text-ink-soft">
                   {description}
                 </p>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>

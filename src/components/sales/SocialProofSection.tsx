@@ -6,7 +6,7 @@ import { testimonials } from "@/config/testimonials";
 
 export function SocialProofSection() {
   return (
-    <section className="bg-cream-dark py-14 sm:py-20">
+    <section className="paper-panel py-16 sm:py-24">
       <Container>
         <SectionTitle
           title="O que os pais contam depois da primeira leitura"
