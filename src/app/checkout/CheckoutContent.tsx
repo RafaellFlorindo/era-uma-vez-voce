@@ -75,7 +75,7 @@ export function CheckoutContent() {
               key={offerId}
               src={caktoCheckoutUrl(offerId)}
               title="Finalizar pagamento"
-              className="h-[900px] w-full border-0"
+              className="h-[1250px] w-full border-0 sm:h-[1150px]"
               allow="payment"
             />
           ) : (
