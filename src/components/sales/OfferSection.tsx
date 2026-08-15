@@ -8,16 +8,21 @@ import { Reveal } from "@/components/ui/Reveal";
 import { offer, pageTiers, formatPrice, DEFAULT_TIER_INDEX } from "@/config/offer";
 import { handleInitiateCheckout } from "@/lib/checkout";
 import { trackEvent } from "@/lib/analytics";
+import { useStorySessionStore } from "@/store/storySession";
 import { cn } from "@/lib/utils";
 
 interface OfferSectionProps {
   childName: string;
+  /** Chamado quando ainda não existe história gerada para vender. */
+  onNeedsStory: () => void;
 }
 
-export function OfferSection({ childName }: OfferSectionProps) {
+export function OfferSection({ childName, onNeedsStory }: OfferSectionProps) {
   const ref = useRef<HTMLDivElement>(null);
   const trackedRef = useRef(false);
   const [selectedTierIndex, setSelectedTierIndex] = useState(DEFAULT_TIER_INDEX);
+  const session = useStorySessionStore((s) => s.session);
+  const preview = useStorySessionStore((s) => s.preview);
 
   useEffect(() => {
     const el = ref.current;
@@ -35,12 +40,29 @@ export function OfferSection({ childName }: OfferSectionProps) {
     return () => observer.disconnect();
   }, [childName]);
 
-  const ctaLabel = childName
-    ? `Quero completar a história de ${childName}`
-    : "Quero criar a história do meu filho";
-
   const selectedTier = pageTiers[selectedTierIndex];
   const pricePerPage = selectedTier.price / selectedTier.pages;
+
+  // Sem prévia gerada não existe livro para entregar depois do pagamento.
+  // Nesse caso o botão leva ao wizard em vez de cobrar por algo inexistente.
+  const hasStory = Boolean(preview);
+  const ctaLabel = !hasStory
+    ? "Criar a história do meu filho"
+    : `Quero completar a história de ${childName || "meu filho"}`;
+
+  function handleBuy() {
+    if (!preview) {
+      trackEvent("offer_cta_without_story");
+      onNeedsStory();
+      return;
+    }
+    void handleInitiateCheckout(
+      selectedTier,
+      session,
+      { title: preview.title, intro: preview.intro, pages: preview.pages },
+      { childName, source: "offer_section" },
+    );
+  }
 
   return (
     <section ref={ref} id="oferta" className="scroll-mt-8 py-16 sm:py-24">
@@ -132,13 +154,15 @@ export function OfferSection({ childName }: OfferSectionProps) {
               </p>
             </div>
 
-            <Button
-              size="lg"
-              className="mt-6 w-full"
-              onClick={() => handleInitiateCheckout(selectedTier, { childName })}
-            >
+            <Button size="lg" className="mt-6 w-full" onClick={handleBuy}>
               {ctaLabel}
             </Button>
+
+            {!hasStory && (
+              <p className="mt-2.5 text-center text-xs text-ink-soft">
+                Primeiro monte a prévia gratuita. Leva 2 minutos.
+              </p>
+            )}
 
             <ul className="mt-4 flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5 text-[11px] font-medium text-ink-faint">
               <li className="inline-flex items-center gap-1">

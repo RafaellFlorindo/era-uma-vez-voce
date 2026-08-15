@@ -10,8 +10,11 @@ export type AnalyticsEvent =
   | "preview_viewed"
   | "offer_viewed"
   | "initiate_checkout"
+  | "offer_cta_without_story"
+  | "order_creation_failed"
   | "ai_story_generation_failed"
   | "narration_requested"
+  | "purchase_confirmed"
   | "ebook_download_requested";
 
 export type AnalyticsPayload = Record<string, unknown>;

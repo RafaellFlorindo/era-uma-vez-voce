@@ -4,6 +4,7 @@ import {
   ChildGender,
   EMPTY_STORY_SESSION,
   PersonalityTrait,
+  StoryPreview,
   StorySession,
   ThemeId,
   VisualStyleId,
@@ -34,6 +35,13 @@ function createDebouncedStorage(): StateStorage {
 
 interface StorySessionState {
   session: StorySession;
+  /**
+   * Prévia já gerada. Fica no store (e não só dentro do wizard) porque a
+   * seção de oferta, lá embaixo, precisa saber se existe uma história para
+   * vender — sem ela, não há livro para entregar depois do pagamento.
+   */
+  preview: StoryPreview | null;
+  setPreview: (preview: StoryPreview | null) => void;
   setChildName: (name: string) => void;
   setAge: (age: number) => void;
   setGender: (gender: ChildGender) => void;
@@ -53,6 +61,8 @@ export const useStorySessionStore = create<StorySessionState>()(
   persist(
     (set) => ({
       session: EMPTY_STORY_SESSION,
+      preview: null,
+      setPreview: (preview) => set({ preview }),
       setChildName: (name) =>
         set((state) => ({ session: { ...state.session, childName: name } })),
       setAge: (age) => set((state) => ({ session: { ...state.session, age } })),
@@ -74,7 +84,7 @@ export const useStorySessionStore = create<StorySessionState>()(
       setVisualStyle: (style) =>
         set((state) => ({ session: { ...state.session, visualStyle: style } })),
       setStep: (step) => set((state) => ({ session: { ...state.session, currentStep: step } })),
-      reset: () => set({ session: EMPTY_STORY_SESSION }),
+      reset: () => set({ session: EMPTY_STORY_SESSION, preview: null }),
     }),
     {
       name: "euv_story_session",

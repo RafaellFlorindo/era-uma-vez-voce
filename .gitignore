@@ -43,3 +43,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# pedidos e PDFs gerados (contêm foto da criança — nunca versionar)
+/.data/
