@@ -70,7 +70,7 @@ export function StoryPreviewSection({
 
       <div className="mt-6 overflow-hidden rounded-card bg-white shadow-[var(--shadow-lift)] ring-1 ring-cream-deep">
         <div className="grid grid-cols-1 sm:grid-cols-[1fr_1.3fr]">
-          <div className="flex items-center justify-center bg-secondary p-6">
+          <div className="flex items-center justify-center bg-cream p-6">
             <StyledPhotoCover
               photoDataUrl={session.photoDataUrl}
               theme={session.theme}
