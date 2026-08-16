@@ -70,7 +70,7 @@ export function StoryPreviewSection({
         </p>
       )}
 
-      <div className="mt-6 overflow-hidden rounded-card bg-white shadow-xl shadow-ink/10">
+      <div className="mt-6 overflow-hidden rounded-card bg-white shadow-[var(--shadow-lift)] ring-1 ring-cream-deep">
         <div className="grid grid-cols-1 sm:grid-cols-[1fr_1.3fr]">
           <button
             onClick={onUnlock}

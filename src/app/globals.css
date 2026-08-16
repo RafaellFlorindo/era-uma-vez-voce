@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+/*
+ * Direção visual: "livro de história impresso, premium".
+ * Papel quente com grão, tinta marrom em vez de preto, serifada macia no
+ * display e sans arredondada no corpo. Nada de cinza puro nem sombra preta:
+ * tudo é tingido pelo tom do papel, que é o que dá a sensação de impresso.
+ */
 :root {
   /* Base */
   --background: #fffaf3;
@@ -8,20 +14,30 @@
   /* Brand — quente, acolhedor, "livro infantil premium" */
   --color-primary: #e8734a;       /* laranja terracota — CTA */
   --color-primary-dark: #cc5a34;
+  --color-primary-deep: #9e421f;  /* borda inferior do botão: dá volume de impressão */
   --color-secondary: #2c5f6f;     /* azul petróleo — títulos/âncoras */
   --color-accent: #f2b94f;        /* dourado — destaques, estrelas */
   --color-cream: #fffaf3;         /* fundo principal */
   --color-cream-dark: #f7ecd9;    /* fundo alternado de seção */
+  --color-cream-deep: #efdfc4;    /* bordas e sombras de papel */
   --color-ink: #2e2418;           /* texto principal */
   --color-ink-soft: #6b5c4a;      /* texto secundário */
+  --color-ink-faint: #9c8b76;     /* legendas, meta */
   --color-success: #4c8c6b;
 
   --radius-card: 1.25rem;
   --radius-button: 999px;
   --container-width: 1120px;
 
-  --font-display: var(--font-fredoka), var(--font-geist-sans), sans-serif;
-  --font-sans: var(--font-geist-sans), sans-serif;
+  --font-display: var(--font-fraunces), Georgia, serif;
+  --font-sans: var(--font-nunito), ui-sans-serif, sans-serif;
+
+  /* Sombras tingidas de papel — nunca preto puro. */
+  --shadow-sm: 0 1px 2px rgba(46, 36, 24, 0.06);
+  --shadow-card: 0 2px 4px rgba(46, 36, 24, 0.04), 0 10px 28px -12px rgba(46, 36, 24, 0.18);
+  --shadow-lift: 0 4px 10px rgba(46, 36, 24, 0.06), 0 24px 56px -20px rgba(46, 36, 24, 0.28);
+  --shadow-cta: 0 2px 0 var(--color-primary-deep), 0 14px 30px -10px rgba(232, 115, 74, 0.55);
+  --shadow-cta-hover: 0 1px 0 var(--color-primary-deep), 0 10px 22px -8px rgba(232, 115, 74, 0.6);
 }
 
 @theme inline {
@@ -29,28 +45,106 @@
   --color-foreground: var(--foreground);
   --color-primary: var(--color-primary);
   --color-primary-dark: var(--color-primary-dark);
+  --color-primary-deep: var(--color-primary-deep);
   --color-secondary: var(--color-secondary);
   --color-accent: var(--color-accent);
   --color-cream: var(--color-cream);
   --color-cream-dark: var(--color-cream-dark);
+  --color-cream-deep: var(--color-cream-deep);
   --color-ink: var(--color-ink);
   --color-ink-soft: var(--color-ink-soft);
+  --color-ink-faint: var(--color-ink-faint);
   --color-success: var(--color-success);
   --radius-card: var(--radius-card);
   --radius-button: var(--radius-button);
   --font-display: var(--font-display);
   --font-sans: var(--font-sans);
+  --shadow-card: var(--shadow-card);
+  --shadow-lift: var(--shadow-lift);
 }
 
 body {
   background: var(--color-cream);
   color: var(--color-ink);
   font-family: var(--font-sans);
+  /* Evita que o grão do papel crie barra horizontal em telas estreitas. */
+  overflow-x: hidden;
+}
+
+/*
+ * Grão de papel. Fica por cima de tudo, sem capturar clique, com opacidade
+ * baixa o bastante para ser sentido e não visto.
+ */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.055'/%3E%3C/svg%3E");
 }
 
 .font-display {
   font-family: var(--font-display);
+  font-optical-sizing: auto;
+  letter-spacing: -0.015em;
 }
+
+/* Títulos grandes pedem tracking mais fechado para não parecerem soltos. */
+.font-display.text-balance,
+h1.font-display,
+h2.font-display {
+  text-wrap: balance;
+}
+
+/* --- Motivos de papel ------------------------------------------------- */
+
+/* Textura de fundo de seção: papel levemente mais quente com vinheta suave. */
+.paper-panel {
+  background:
+    radial-gradient(120% 90% at 50% 0%, rgba(255, 255, 255, 0.65) 0%, transparent 60%),
+    var(--color-cream-dark);
+}
+
+/* Linha divisória que imita a costura entre cadernos de um livro. */
+.rule-soft {
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    color-mix(in srgb, var(--color-ink) 14%, transparent),
+    transparent
+  );
+}
+
+/*
+ * Marca-texto que sobrevive à quebra de linha. `box-decoration-break: clone`
+ * é o que faz cada linha ganhar seu próprio traço, em vez de um retângulo
+ * único esticado por trás do parágrafo inteiro.
+ */
+.highlight-marker {
+  background-image: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--color-accent) 45%, transparent) 0%,
+    color-mix(in srgb, var(--color-accent) 45%, transparent) 24%,
+    transparent 24%
+  );
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  padding-inline: 0.06em;
+}
+
+/* Texto em "folha de ouro" para números e destaques. */
+.foil-text {
+  background: linear-gradient(100deg, #d99b2a 0%, #f7d786 45%, #e0a63a 70%, #f2b94f 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* --- Movimento -------------------------------------------------------- */
 
 @keyframes gentle-bounce {
   0%, 100% { transform: translateY(0); }
@@ -66,4 +160,44 @@ body {
 }
 .animate-fade-in-up {
   animation: fade-in-up 0.5s ease-out both;
+}
+
+/* Brilho que atravessa o CTA de tempos em tempos, como reflexo em relevo. */
+@keyframes cta-sheen {
+  0%, 82% { transform: translateX(-120%); }
+  100% { transform: translateX(220%); }
+}
+
+/*
+ * Revelação no scroll. O estado inicial só é aplicado quando o JS confirma
+ * que vai observar o elemento (`data-reveal-armed`), senão um usuário sem JS
+ * ficaria com a página inteira invisível.
+ */
+[data-reveal][data-reveal-armed="true"] {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+[data-reveal].is-revealed {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  [data-reveal][data-reveal-armed="true"] {
+    opacity: 1;
+    transform: none;
+  }
 }

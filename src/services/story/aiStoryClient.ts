@@ -39,29 +39,8 @@ export async function fetchAiNarration(text: string): Promise<string> {
   return audioDataUrl as string;
 }
 
-/**
- * Gera o e-book em PDF (capa + páginas com imagem e texto) e dispara o
- * download no navegador. Lança erro se a geração falhar.
+/*
+ * O download do e-book saiu daqui de propósito. Ele agora mora em
+ * /api/orders/{token}/ebook, atrás da verificação de pagamento: a rota
+ * antiga gerava o livro completo para qualquer um que soubesse chamá-la.
  */
-export async function downloadAiEbook(session: StorySession, story: GeneratedStoryText): Promise<void> {
-  const response = await fetch("/api/generate-ebook", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ session, story }),
-  });
-
-  if (!response.ok) {
-    const body = await response.json().catch(() => ({}));
-    throw new Error(body.error || `Falha ao gerar e-book (${response.status}).`);
-  }
-
-  const blob = await response.blob();
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = `${(session.childName || "historia").toLowerCase()}-era-uma-vez-voce.pdf`;
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-  URL.revokeObjectURL(url);
-}

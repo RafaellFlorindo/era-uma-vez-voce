@@ -89,6 +89,8 @@ async function generateFromPhoto(
 
 export const openaiImageProvider: ImageProvider = {
   name: "openai",
+  // A conta paga aguenta o livro inteiro de uma vez.
+  maxConcurrency: 4,
 
   async generateCover(session: StorySession) {
     const prompt = session.photoDataUrl

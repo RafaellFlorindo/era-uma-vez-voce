@@ -36,7 +36,7 @@ export function GenerationLoading({ childName, hasPhoto = false, onComplete }: G
   }, [activeIndex]);
 
   return (
-    <div className="mx-auto flex w-full max-w-xl flex-col items-center rounded-card bg-white p-8 text-center shadow-xl shadow-ink/10 sm:p-10">
+    <div className="mx-auto flex w-full max-w-xl flex-col items-center rounded-card bg-white p-8 text-center shadow-[var(--shadow-lift)] ring-1 ring-cream-deep sm:p-10">
       <span className="text-4xl">✨</span>
       <p className="mt-4 font-display text-xl font-semibold text-ink">
         Estamos dando vida à aventura de {childName || "seu filho"}...

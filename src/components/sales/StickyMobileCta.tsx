@@ -33,7 +33,7 @@ export function StickyMobileCta({ heroRef, wizardRef, onClick }: StickyMobileCta
   if (!pastHero || insideWizard) return null;
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-40 border-t border-ink/10 bg-white/95 p-3 backdrop-blur-sm sm:hidden">
+    <div className="fixed inset-x-0 bottom-0 z-40 border-t border-cream-deep bg-cream/95 px-3 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-[0_-8px_24px_-12px_rgba(46,36,24,0.25)] backdrop-blur-md sm:hidden">
       <Button
         size="md"
         className="w-full"
@@ -44,6 +44,9 @@ export function StickyMobileCta({ heroRef, wizardRef, onClick }: StickyMobileCta
       >
         Criar minha história
       </Button>
+      <p className="mt-1.5 text-center text-[11px] text-ink-faint">
+        Grátis para ver a prévia. Leva 2 minutos.
+      </p>
     </div>
   );
 }

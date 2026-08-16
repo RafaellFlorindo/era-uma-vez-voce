@@ -37,7 +37,7 @@ export default function Home() {
       <MechanismSection />
       <HowItWorksSection />
       <PersonalizationSection ref={wizardRef} />
-      <OfferSection childName={childName} />
+      <OfferSection childName={childName} onNeedsStory={scrollToWizard} />
       <SocialProofSection />
       <GuaranteeSection />
       <FaqSection />

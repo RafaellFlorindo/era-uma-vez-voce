@@ -47,6 +47,7 @@ export const PersonalizationSection = forwardRef<HTMLElement, PersonalizationSec
     const togglePersonality = useStorySessionStore((s) => s.togglePersonality);
     const setVisualStyle = useStorySessionStore((s) => s.setVisualStyle);
     const setStep = useStorySessionStore((s) => s.setStep);
+    const setStoredPreview = useStorySessionStore((s) => s.setPreview);
     const resetSession = useStorySessionStore((s) => s.reset);
 
     const [phase, setPhase] = useState<Phase>("form");
@@ -107,21 +108,26 @@ export const PersonalizationSection = forwardRef<HTMLElement, PersonalizationSec
     async function handleLoadingComplete() {
       const generated = (await aiStoryPromiseRef.current) ?? generateMockStoryPreview(session);
       setPreview(generated);
+      // Publica no store para a seção de oferta poder vender esta história.
+      setStoredPreview(generated);
       setPhase("preview");
       trackEvent("preview_viewed", { title: generated.title });
       onPreviewReady?.();
     }
 
     function handleUnlock() {
+      if (!preview) return;
       const defaultTier = pageTiers[DEFAULT_TIER_INDEX];
-      handleInitiateCheckout(defaultTier, {
-        childName: session.childName,
-        source: "preview_unlock",
-      });
+      void handleInitiateCheckout(
+        defaultTier,
+        session,
+        { title: preview.title, intro: preview.intro, pages: preview.pages },
+        { childName: session.childName, source: "preview_unlock" },
+      );
     }
 
     return (
-      <section ref={ref} id="criar-historia" className="bg-cream-dark py-14 sm:py-20">
+      <section ref={ref} id="criar-historia" className="paper-panel py-16 sm:py-24">
         <Container>
           <SectionTitle
             title={phase === "preview" ? "Sua história está tomando forma..." : "Vamos criar uma história agora?"}

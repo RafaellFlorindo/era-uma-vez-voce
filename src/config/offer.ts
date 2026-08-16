@@ -24,6 +24,20 @@ export function caktoCheckoutUrl(offerId: string): string {
 
 export const DEFAULT_TIER_INDEX = 1;
 
+/**
+ * CONFIRMAR: o e-mail abaixo aparece publicamente na seção de garantia e é
+ * o canal que o comprador vai usar para pedir reembolso. Trocar pelo e-mail
+ * real de suporte antes de subir para produção.
+ *
+ * O prazo de 7 dias não é escolha de marketing: é o direito de
+ * arrependimento do art. 49 do Código de Defesa do Consumidor para compras
+ * fora do estabelecimento. Reduzi-lo não é possível.
+ */
+export const support = {
+  email: "contato@erauamvezvoce.com.br", // TODO: trocar pelo e-mail real de suporte
+  refundWindowDays: 7,
+};
+
 export const offer = {
   productName: "Era Uma Vez Você",
   currency: "BRL",
