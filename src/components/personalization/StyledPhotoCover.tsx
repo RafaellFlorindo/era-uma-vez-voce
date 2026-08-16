@@ -54,11 +54,14 @@ export function StyledPhotoCover({
   const filter = [visual?.filter, styleFilter].filter(Boolean).join(" ");
 
   const showAiImage = Boolean(aiImageUrl) && aiImageUrl !== failedUrl;
-  const showFallback = !showAiImage || generating;
+  // Fallback "de verdade" só quando não existe ilustração do tema pra
+  // mostrar — nunca durante o delay de simulação, senão a foto real da
+  // criança aparece por baixo e estraga a ilusão de que já geramos a arte.
+  const showRealFallback = !showAiImage;
 
   return (
     <div className={cn("relative aspect-[3/4] w-full overflow-hidden rounded-xl shadow-lg", className)}>
-      {showFallback &&
+      {showRealFallback &&
         (photoDataUrl ? (
           <>
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -85,16 +88,30 @@ export function StyledPhotoCover({
         ))}
 
       {showAiImage && (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={aiImageUrl}
-          alt={title ?? "Ilustração do tema"}
-          className={cn(
-            "absolute inset-0 h-full w-full object-cover transition-opacity duration-500",
-            generating ? "opacity-0" : "opacity-100",
-          )}
-          onError={() => setFailedUrl(aiImageUrl)}
-        />
+        <>
+          {/* Versão borrada da própria ilustração como placeholder — evita
+              mostrar a foto real da criança piscando por baixo. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={aiImageUrl}
+            alt=""
+            aria-hidden="true"
+            className={cn(
+              "absolute inset-0 h-full w-full scale-110 object-cover blur-lg transition-opacity duration-300",
+              generating ? "opacity-100" : "opacity-0",
+            )}
+          />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={aiImageUrl}
+            alt={title ?? "Ilustração do tema"}
+            className={cn(
+              "absolute inset-0 h-full w-full object-cover transition-opacity duration-500",
+              generating ? "opacity-0" : "opacity-100",
+            )}
+            onError={() => setFailedUrl(aiImageUrl)}
+          />
+        </>
       )}
 
       {showAiImage && generating && (
@@ -112,7 +129,7 @@ export function StyledPhotoCover({
         </div>
       )}
 
-      {(!showAiImage || generating) && visual && (
+      {showRealFallback && visual && (
         <div
           className={cn(
             "animate-fade-in-up absolute flex items-center justify-center rounded-full bg-white shadow-md",

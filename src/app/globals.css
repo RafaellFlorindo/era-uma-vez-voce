@@ -196,6 +196,13 @@ h2.font-display {
     transition-duration: 0.001ms !important;
   }
 
+  /* Spinners de carregamento comunicam um estado real (algo em andamento),
+     não são só decoração — travar o giro faz parecer que a página quebrou. */
+  .animate-spin {
+    animation-duration: 1s !important;
+    animation-iteration-count: infinite !important;
+  }
+
   [data-reveal][data-reveal-armed="true"] {
     opacity: 1;
     transform: none;
