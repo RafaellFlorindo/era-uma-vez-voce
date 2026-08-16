@@ -23,8 +23,6 @@ import { generateMockStoryPreview } from "@/services/story/mockStoryGenerator";
 import { fetchAiStoryText } from "@/services/story/aiStoryClient";
 import { getTemplateCoverUrl } from "@/services/story/previewTemplates";
 import { trackEvent } from "@/lib/analytics";
-import { handleInitiateCheckout } from "@/lib/checkout";
-import { pageTiers, DEFAULT_TIER_INDEX } from "@/config/offer";
 import { cn } from "@/lib/utils";
 import { ChildGender, StoryPreview } from "@/types/story";
 
@@ -131,13 +129,7 @@ export const PersonalizationSection = forwardRef<HTMLElement, PersonalizationSec
 
     function handleUnlock() {
       if (!preview) return;
-      const defaultTier = pageTiers[DEFAULT_TIER_INDEX];
-      void handleInitiateCheckout(
-        defaultTier,
-        session,
-        { title: preview.title, intro: preview.intro, pages: preview.pages },
-        { childName: session.childName, source: "preview_unlock" },
-      );
+      document.getElementById("oferta")?.scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
     return (
