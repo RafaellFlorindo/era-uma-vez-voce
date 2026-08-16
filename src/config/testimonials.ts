@@ -7,30 +7,26 @@ export interface Testimonial {
   authorContext: string;
 }
 
-/**
- * PLACEHOLDER: nada aqui é depoimento real.
- *
- * Substituir por depoimentos verdadeiros de clientes antes de subir tráfego.
- * O texto entre colchetes deixa claro o que ainda falta preencher; as fotos
- * entram em public/depoimentos/ com os nomes abaixo.
- */
 export const testimonials: Testimonial[] = [
   {
     photoUrl: "/depoimentos/depoimento-1.jpg",
-    quote: "[Colar aqui o depoimento real, nas palavras dele.]",
-    authorName: "[Nome]",
-    authorContext: "[pai do ___, __ anos]",
+    quote:
+      "Na hora que ele percebeu que era o personagem da história, abriu um sorrisão e falou: 'Pai, esse sou eu!'. Depois quis mostrar cada página pra todo mundo. Foi muito legal ver ele se sentindo parte da aventura.",
+    authorName: "Lucas",
+    authorContext: "pai do Bernardo, 5 anos",
   },
   {
     photoUrl: "/depoimentos/depoimento-2.jpg",
-    quote: "[Colar aqui o depoimento real, nas palavras dela.]",
-    authorName: "[Nome]",
-    authorContext: "[mãe do ___, __ anos]",
+    quote:
+      "O que mais me surpreendeu foi o quanto ela entrou na história. Ela comentava cada cena como se realmente estivesse vivendo aquela aventura.",
+    authorName: "Fernanda",
+    authorContext: "mãe da Alice, 8 anos",
   },
   {
     photoUrl: "/depoimentos/depoimento-3.jpg",
-    quote: "[Colar aqui o depoimento real, nas palavras dela.]",
-    authorName: "[Nome]",
-    authorContext: "[mãe do ___, __ anos]",
+    quote:
+      "Eu achei que ele ia gostar, mas não imaginei que seria tanto. Mostrou o livro pra avó, pro pai, pros primos, dizendo pra todo mundo que ele tinha virado personagem.",
+    authorName: "Larissa",
+    authorContext: "mãe do Pedro, 9 anos",
   },
 ];
