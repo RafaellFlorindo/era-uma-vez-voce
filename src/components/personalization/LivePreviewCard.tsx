@@ -3,6 +3,7 @@
 import { Sparkles } from "lucide-react";
 import { useStorySessionStore } from "@/store/storySession";
 import { generateLivePreview } from "@/services/story/mockStoryGenerator";
+import { getTemplateCoverUrl } from "@/services/story/previewTemplates";
 import { StyledPhotoCover } from "@/components/personalization/StyledPhotoCover";
 import { cn } from "@/lib/utils";
 
@@ -24,6 +25,7 @@ export function LivePreviewCard() {
           photoDataUrl={session.photoDataUrl}
           theme={session.theme}
           visualStyle={session.visualStyle}
+          aiImageUrl={session.theme ? getTemplateCoverUrl(session.theme) : undefined}
           title={preview.title}
           size="sm"
           className="w-16 shrink-0 sm:w-20"

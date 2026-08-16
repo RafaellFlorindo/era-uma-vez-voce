@@ -5,6 +5,7 @@ import { Lock, Loader2, Pause, Play, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { StyledPhotoCover } from "@/components/personalization/StyledPhotoCover";
 import { fetchAiNarration } from "@/services/story/aiStoryClient";
+import { getTemplatePageUrl } from "@/services/story/previewTemplates";
 import { trackEvent } from "@/lib/analytics";
 import { StorySession, StoryPreview } from "@/types/story";
 
@@ -53,10 +54,6 @@ export function StoryPreviewSection({
   const getAudio = useNarrationPrefetch(preview.pages[0]);
   const childName = session.childName;
 
-  // Mesma imagem da capa, só que borrada — representa as páginas 2, 3 e 4
-  // sem custar geração extra por visitante.
-  const lockedThumbUrl = aiImageUrl ?? `/covers/${session.theme ?? "magia"}.jpg`;
-
   return (
     <div className="mx-auto w-full max-w-2xl">
       <p className="flex items-center justify-center gap-1.5 text-center font-display text-lg font-medium text-primary-dark sm:text-xl">
@@ -95,11 +92,11 @@ export function StoryPreviewSection({
             onClick={onUnlock}
             className="group grid w-full grid-cols-3 gap-2 rounded-xl border border-primary/20 bg-cream p-2"
           >
-            {[2, 3, 4].map((n) => (
+            {[2, 3, 4].map((n, index) => (
               <div key={n} className="relative aspect-[3/4] overflow-hidden rounded-lg bg-ink/10">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={lockedThumbUrl}
+                  src={getTemplatePageUrl(session.theme, index)}
                   alt={`Página ${n} (bloqueada)`}
                   className="h-full w-full scale-110 object-cover blur-lg"
                 />
