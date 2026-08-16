@@ -9,6 +9,7 @@ interface RevealProps {
   delay?: number;
   as?: ElementType;
   className?: string;
+  id?: string;
 }
 
 /**
@@ -19,7 +20,7 @@ interface RevealProps {
  * veria uma página em branco, o que custaria a venda inteira. O CSS que faz
  * o trabalho está em `globals.css` (`[data-reveal]`).
  */
-export function Reveal({ children, delay = 0, as, className }: RevealProps) {
+export function Reveal({ children, delay = 0, as, className, id }: RevealProps) {
   const Tag = (as ?? "div") as ElementType;
   const ref = useRef<HTMLElement>(null);
   const [armed, setArmed] = useState(false);
@@ -50,6 +51,7 @@ export function Reveal({ children, delay = 0, as, className }: RevealProps) {
   return (
     <Tag
       ref={ref}
+      id={id}
       data-reveal=""
       data-reveal-armed={armed ? "true" : "false"}
       className={cn(revealed && "is-revealed", className)}

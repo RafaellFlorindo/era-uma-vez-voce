@@ -54,7 +54,7 @@ export const PersonalizationSection = forwardRef<HTMLElement, PersonalizationSec
     const step = Math.min(session.currentStep || 1, TOTAL_STEPS);
     const aiStoryPromiseRef = useRef<Promise<StoryPreview> | null>(null);
     const phaseContentRef = useRef<HTMLDivElement>(null);
-    const isFirstRender = useRef(true);
+    const prevPhaseRef = useRef<Phase | null>(null);
 
     useEffect(() => {
       trackEvent("personalization_started");
@@ -63,13 +63,14 @@ export const PersonalizationSection = forwardRef<HTMLElement, PersonalizationSec
     // Ao trocar de fase (form -> loading -> preview) o card muda de altura,
     // e o scroll do usuário pode acabar sobrando embaixo, cortando o topo do
     // conteúdo novo. Realinha o topo do card com o topo da tela sempre que
-    // a fase muda, exceto na primeira renderização.
+    // a fase muda de verdade — comparar com o valor anterior (em vez de um
+    // simples "é a primeira renderização?") evita disparo em falso quando o
+    // StrictMode do React invoca o efeito duas vezes na montagem.
     useEffect(() => {
-      if (isFirstRender.current) {
-        isFirstRender.current = false;
-        return;
+      if (prevPhaseRef.current !== null && prevPhaseRef.current !== phase) {
+        phaseContentRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
       }
-      phaseContentRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      prevPhaseRef.current = phase;
     }, [phase]);
 
     function goToStep(next: number) {
@@ -129,7 +130,8 @@ export const PersonalizationSection = forwardRef<HTMLElement, PersonalizationSec
 
     function handleUnlock() {
       if (!preview) return;
-      document.getElementById("oferta")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      const target = document.getElementById("oferta-cartao") ?? document.getElementById("oferta");
+      target?.scrollIntoView({ behavior: "smooth", block: "center" });
     }
 
     return (
@@ -266,7 +268,6 @@ function StepChildInfo({
       <div className="flex flex-col gap-1.5">
         <label className="text-sm font-semibold text-ink">Nome da criança</label>
         <input
-          autoFocus
           value={childName}
           onChange={(e) => onChangeName(e.target.value)}
           placeholder="Ex: Gabriel"

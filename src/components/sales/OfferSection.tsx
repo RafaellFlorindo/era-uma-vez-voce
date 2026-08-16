@@ -78,8 +78,9 @@ export function OfferSection({ childName, onNeedsStory }: OfferSectionProps) {
         </Reveal>
 
         <Reveal
+          id="oferta-cartao"
           delay={120}
-          className="mx-auto mt-12 max-w-md overflow-hidden rounded-card bg-white shadow-[var(--shadow-lift)] ring-1 ring-cream-deep"
+          className="mx-auto mt-12 max-w-md scroll-mt-8 overflow-hidden rounded-card bg-white shadow-[var(--shadow-lift)] ring-1 ring-cream-deep"
         >
           <div className="relative overflow-hidden bg-secondary px-6 py-6 text-center text-white">
             <div className="pointer-events-none absolute -top-16 -right-10 h-40 w-40 rounded-full bg-accent/20 blur-2xl" />
