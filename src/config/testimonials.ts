@@ -17,20 +17,20 @@ export interface Testimonial {
 export const testimonials: Testimonial[] = [
   {
     photoUrl: "/depoimentos/depoimento-1.jpg",
-    quote: "[Colar aqui o depoimento real, nas palavras da mãe ou do pai.]",
+    quote: "[Colar aqui o depoimento real, nas palavras dele.]",
     authorName: "[Nome]",
-    authorContext: "[mãe do ___, __ anos]",
+    authorContext: "[pai do ___, __ anos]",
   },
   {
     photoUrl: "/depoimentos/depoimento-2.jpg",
-    quote: "[Colar aqui o depoimento real, nas palavras da mãe ou do pai.]",
+    quote: "[Colar aqui o depoimento real, nas palavras dela.]",
     authorName: "[Nome]",
     authorContext: "[mãe do ___, __ anos]",
   },
   {
     photoUrl: "/depoimentos/depoimento-3.jpg",
-    quote: "[Colar aqui o depoimento real, nas palavras da mãe ou do pai.]",
+    quote: "[Colar aqui o depoimento real, nas palavras dela.]",
     authorName: "[Nome]",
-    authorContext: "[pai da ___, __ anos]",
+    authorContext: "[mãe do ___, __ anos]",
   },
 ];
