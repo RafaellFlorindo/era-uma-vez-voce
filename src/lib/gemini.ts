@@ -19,10 +19,30 @@ const STYLE_LABELS: Record<string, string> = {
   cartoon: "ilustração cartoon, traços expressivos e contornos marcados",
 };
 
-function getClient() {
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) throw new Error("GEMINI_API_KEY não configurada no servidor.");
-  return new GoogleGenAI({ apiKey });
+function isQuotaError(error: unknown): boolean {
+  const message = error instanceof Error ? error.message : String(error);
+  return message.includes("RESOURCE_EXHAUSTED") || message.includes("429") || message.includes("quota");
+}
+
+/**
+ * Roda uma chamada à Gemini API com a chave principal e, se ela bater no
+ * limite de cota (free tier: poucas requisições por dia), tenta de novo com
+ * a chave de backup (outra conta) antes de desistir.
+ */
+async function withGemini<T>(fn: (ai: GoogleGenAI) => Promise<T>): Promise<T> {
+  const primaryKey = process.env.GEMINI_API_KEY;
+  if (!primaryKey) throw new Error("GEMINI_API_KEY não configurada no servidor.");
+
+  try {
+    return await fn(new GoogleGenAI({ apiKey: primaryKey }));
+  } catch (error) {
+    const backupKey = process.env.GEMINI_API_KEY_BACKUP;
+    if (backupKey && isQuotaError(error)) {
+      console.warn("[gemini] cota da chave principal esgotada, tentando a chave de backup");
+      return await fn(new GoogleGenAI({ apiKey: backupKey }));
+    }
+    throw error;
+  }
 }
 
 function buildDnaPrompt(session: StorySession) {
@@ -42,10 +62,9 @@ export interface GeneratedStory {
 }
 
 export async function generateStoryText(session: StorySession): Promise<GeneratedStory> {
-  const ai = getClient();
   const dna = buildDnaPrompt(session);
 
-  const response = await ai.models.generateContent({
+  const response = await withGemini((ai) => ai.models.generateContent({
     model: aiConfig.textModel,
     contents: [
       {
@@ -80,7 +99,7 @@ Responda em JSON com o formato exato:
         required: ["title", "intro", "pages"],
       },
     },
-  });
+  }));
 
   const text = response.text;
   if (!text) throw new Error("Resposta vazia da Gemini API ao gerar o texto da história.");
@@ -99,7 +118,6 @@ export async function generateFullStoryText(
   pageCount: number,
   openingPages: string[],
 ): Promise<GeneratedStory> {
-  const ai = getClient();
   const dna = buildDnaPrompt(session);
   const remaining = Math.max(0, pageCount - openingPages.length);
 
@@ -107,7 +125,7 @@ export async function generateFullStoryText(
     return { title: "", intro: "", pages: openingPages.slice(0, pageCount) };
   }
 
-  const response = await ai.models.generateContent({
+  const response = await withGemini((ai) => ai.models.generateContent({
     model: aiConfig.textModel,
     contents: [
       {
@@ -149,7 +167,7 @@ Responda em JSON com o formato exato:
         required: ["pages"],
       },
     },
-  });
+  }));
 
   const text = response.text;
   if (!text) throw new Error("Resposta vazia da Gemini API ao continuar a história.");
@@ -163,11 +181,10 @@ export async function generateCharacterImage(
   photoBase64: string,
   photoMimeType: string,
 ): Promise<string> {
-  const ai = getClient();
   const dna = buildDnaPrompt(session);
   const style = STYLE_LABELS[session.visualStyle ?? "livro-3d"];
 
-  const response = await ai.models.generateContent({
+  const response = await withGemini((ai) => ai.models.generateContent({
     model: aiConfig.imageModel,
     contents: [
       {
@@ -183,7 +200,7 @@ export async function generateCharacterImage(
     config: {
       responseModalities: ["TEXT", "IMAGE"],
     },
-  });
+  }));
 
   const parts = response.candidates?.[0]?.content?.parts ?? [];
   const imagePart = parts.find((part) => part.inlineData?.data);
@@ -196,9 +213,7 @@ export async function generateCharacterImage(
 }
 
 export async function generateNarrationAudio(text: string): Promise<string> {
-  const ai = getClient();
-
-  const response = await ai.models.generateContent({
+  const response = await withGemini((ai) => ai.models.generateContent({
     model: aiConfig.ttsModel,
     contents: [{ role: "user", parts: [{ text }] }],
     config: {
@@ -207,7 +222,7 @@ export async function generateNarrationAudio(text: string): Promise<string> {
         voiceConfig: { prebuiltVoiceConfig: { voiceName: aiConfig.ttsVoice } },
       },
     },
-  });
+  }));
 
   const parts = response.candidates?.[0]?.content?.parts ?? [];
   const audioPart = parts.find((part) => part.inlineData?.data);

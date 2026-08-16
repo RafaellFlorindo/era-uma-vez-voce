@@ -31,9 +31,9 @@ export default function Home() {
   }
 
   return (
-    <main className="flex-1">
+    <main className="flex-1 pb-[calc(4.75rem+env(safe-area-inset-bottom))] sm:pb-0">
       <Hero ref={heroRef} onStart={scrollToWizard} />
-      <DemoSection />
+      <DemoSection onStart={scrollToWizard} />
       <MechanismSection />
       <HowItWorksSection />
       <PersonalizationSection ref={wizardRef} />

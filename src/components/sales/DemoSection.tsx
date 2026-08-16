@@ -1,14 +1,19 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Pause, Play } from "lucide-react";
+import { ArrowRight, Pause, Play } from "lucide-react";
+import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { SectionTitle } from "@/components/ui/SectionTitle";
 import { Reveal } from "@/components/ui/Reveal";
 import { ImageWithPlaceholder } from "@/components/ui/ImageWithPlaceholder";
 import { demoBook } from "@/config/demo";
 
-export function DemoSection() {
+interface DemoSectionProps {
+  onStart: () => void;
+}
+
+export function DemoSection({ onStart }: DemoSectionProps) {
   return (
     <section className="py-16 sm:py-24">
       <Container>
@@ -59,6 +64,19 @@ export function DemoSection() {
                 <p className="text-xs leading-relaxed text-ink-soft">{page.text}</p>
               </div>
             ))}
+          </div>
+
+          <div className="border-t border-ink/10 bg-cream/60 p-6 text-center sm:p-8">
+            <p className="text-sm font-medium text-ink">
+              Essa foi só uma amostra. Quer ver a aventura completa?
+            </p>
+            <p className="mx-auto mt-1 max-w-md text-xs leading-relaxed text-ink-soft">
+              Crie a história do seu filho e receba o livro inteiro, com o nome
+              e o rosto dele em cada página.
+            </p>
+            <Button onClick={onStart} className="mt-4">
+              Criar a história do meu filho <ArrowRight className="h-4 w-4" />
+            </Button>
           </div>
         </Reveal>
       </Container>

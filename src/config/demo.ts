@@ -10,8 +10,8 @@ export const demoBook = {
   childName: "Gabriel",
   title: "Gabriel e a Jornada no Vale dos Dinossauros",
 
-  /** Arquivo único de narração. Salvar em: public/demo/narracao-gabriel.mp3 */
-  audioUrl: "/demo/narracao-gabriel.mp3",
+  /** Arquivo único de narração. Salvar em: public/demo/narracao-gabriel.wav */
+  audioUrl: "/demo/narracao-gabriel.wav",
 
   cover: {
     imageUrl: "/demo/capa.jpg",

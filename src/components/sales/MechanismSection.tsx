@@ -2,6 +2,7 @@ import { BookHeart, Camera, Heart, Sparkles, User, Wand2 } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { SectionTitle } from "@/components/ui/SectionTitle";
 import { Reveal } from "@/components/ui/Reveal";
+import { cn } from "@/lib/utils";
 
 const inputs = [
   { icon: Camera, label: "Foto" },
@@ -27,7 +28,12 @@ export function MechanismSection() {
               <Reveal
                 key={label}
                 delay={index * 70}
-                className="flex flex-col items-center gap-2.5 rounded-2xl border border-cream-deep bg-white px-3 py-5 text-center shadow-[var(--shadow-sm)] transition-transform duration-300 hover:-translate-y-1"
+                className={cn(
+                  "flex flex-col items-center gap-2.5 rounded-2xl border border-cream-deep bg-white px-3 py-5 text-center shadow-[var(--shadow-sm)] transition-transform duration-300 hover:-translate-y-1",
+                  index === inputs.length - 1 &&
+                    inputs.length % 2 !== 0 &&
+                    "col-span-2 mx-auto w-1/2 min-w-[8.5rem] sm:col-span-1 sm:w-auto",
+                )}
               >
                 <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
                   <Icon className="h-5 w-5 text-primary" />
