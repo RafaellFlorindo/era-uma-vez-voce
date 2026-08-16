@@ -8,7 +8,7 @@ import { ThemeId } from "@/types/story";
  * compra confirmada, usando a foto real via API paga.
  */
 export function getTemplateCoverUrl(theme: ThemeId = "magia"): string {
-  return `/preview-templates/${theme}/cover.jpg`;
+  return `/covers/${theme}.jpg`;
 }
 
 export function getTemplatePageUrl(theme: ThemeId = "magia", pageIndex: number): string {

@@ -17,34 +17,28 @@ interface StoryPreviewSectionProps {
 }
 
 /**
- * Mantém um cache de promises de narração por página, e já dispara a
- * geração de todas assim que a prévia aparece — assim, quando o usuário
- * clicar "Ouvir", o áudio já está pronto (ou quase) em vez de começar do
- * zero e demorar até 30s, o que derrubava a conversão.
+ * Só a página 1 tem narração de graça — dispara a busca assim que a prévia
+ * aparece, pra já estar pronta (ou quase) quando o usuário clicar "Ouvir".
  */
-function useNarrationPrefetch(pages: string[]) {
-  const cacheRef = useRef<Map<number, Promise<string>>>(new Map());
+function useNarrationPrefetch(firstPage: string) {
+  const promiseRef = useRef<Promise<string> | null>(null);
 
-  function getAudio(index: number): Promise<string> {
-    const existing = cacheRef.current.get(index);
-    if (existing) return existing;
-
-    const promise = fetchAiNarration(pages[index]).catch((error) => {
-      cacheRef.current.delete(index); // permite tentar de novo num próximo clique
+  function getAudio(): Promise<string> {
+    if (promiseRef.current) return promiseRef.current;
+    const promise = fetchAiNarration(firstPage).catch((error) => {
+      promiseRef.current = null; // permite tentar de novo num próximo clique
       throw error;
     });
-    cacheRef.current.set(index, promise);
+    promiseRef.current = promise;
     return promise;
   }
 
   useEffect(() => {
-    pages.forEach((_, index) => {
-      getAudio(index).catch(() => {
-        /* erro tratado no clique, aqui só evita unhandled rejection */
-      });
+    getAudio().catch(() => {
+      /* erro tratado no clique, aqui só evita unhandled rejection */
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pages]);
+  }, [firstPage]);
 
   return getAudio;
 }
@@ -56,8 +50,12 @@ export function StoryPreviewSection({
   generatedByAi,
   onUnlock,
 }: StoryPreviewSectionProps) {
-  const getAudio = useNarrationPrefetch(preview.pages);
+  const getAudio = useNarrationPrefetch(preview.pages[0]);
   const childName = session.childName;
+
+  // Mesma imagem da capa, só que borrada — representa as páginas 2, 3 e 4
+  // sem custar geração extra por visitante.
+  const lockedThumbUrl = aiImageUrl ?? `/covers/${session.theme ?? "magia"}.jpg`;
 
   return (
     <div className="mx-auto w-full max-w-2xl">
@@ -72,25 +70,16 @@ export function StoryPreviewSection({
 
       <div className="mt-6 overflow-hidden rounded-card bg-white shadow-[var(--shadow-lift)] ring-1 ring-cream-deep">
         <div className="grid grid-cols-1 sm:grid-cols-[1fr_1.3fr]">
-          <button
-            onClick={onUnlock}
-            className="group relative flex items-center justify-center bg-secondary p-6"
-          >
+          <div className="flex items-center justify-center bg-secondary p-6">
             <StyledPhotoCover
               photoDataUrl={session.photoDataUrl}
               theme={session.theme}
               visualStyle={session.visualStyle}
               aiImageUrl={aiImageUrl}
               title={preview.title}
-              className="max-w-[220px] brightness-[0.55] transition-[filter] group-hover:brightness-[0.45]"
+              className="max-w-[220px]"
             />
-            <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-2 text-white">
-              <span className="flex h-11 w-11 items-center justify-center rounded-full bg-white/15 backdrop-blur-sm">
-                <Lock className="h-5 w-5" />
-              </span>
-              <span className="text-xs font-semibold uppercase tracking-wide">Toque para desbloquear</span>
-            </div>
-          </button>
+          </div>
           <div className="p-6 sm:p-8">
             <p className="font-display text-lg font-semibold leading-snug text-ink sm:text-xl">
               {preview.title}
@@ -100,14 +89,26 @@ export function StoryPreviewSection({
         </div>
 
         <div className="space-y-3 border-t border-ink/10 p-6 sm:p-8">
-          {preview.pages.map((page, index) => (
-            <PageBlock
-              key={index}
-              label={`Página ${index + 1}`}
-              content={page}
-              getAudio={() => getAudio(index)}
-            />
-          ))}
+          <PageBlock label="Página 1" content={preview.pages[0]} getAudio={getAudio} />
+
+          <button
+            onClick={onUnlock}
+            className="group grid w-full grid-cols-3 gap-2 rounded-xl border border-primary/20 bg-cream p-2"
+          >
+            {[2, 3, 4].map((n) => (
+              <div key={n} className="relative aspect-[3/4] overflow-hidden rounded-lg bg-ink/10">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={lockedThumbUrl}
+                  alt={`Página ${n} (bloqueada)`}
+                  className="h-full w-full scale-110 object-cover blur-lg"
+                />
+                <div className="absolute inset-0 flex items-center justify-center bg-ink/40">
+                  <Lock className="h-4 w-4 text-white" />
+                </div>
+              </div>
+            ))}
+          </button>
 
           <div className="rounded-xl border border-primary/20 bg-gradient-to-br from-primary/10 to-accent/10 p-6 text-center">
             <div className="mx-auto flex h-11 w-11 items-center justify-center rounded-full bg-white shadow-sm">
@@ -115,8 +116,8 @@ export function StoryPreviewSection({
             </div>
             <p className="mt-3 font-display text-base font-semibold text-ink">E essa foi só o começo...</p>
             <p className="mx-auto mt-1 max-w-sm text-sm text-ink-soft">
-              As ilustrações e os capítulos completos esperam por {childName || "seu filho"} do
-              outro lado.
+              As páginas 2, 3 e 4 com ilustrações completas esperam por {childName || "seu filho"}{" "}
+              do outro lado.
             </p>
             <Button onClick={onUnlock} className="mt-4 w-full sm:w-auto">
               Quero ver a história completa

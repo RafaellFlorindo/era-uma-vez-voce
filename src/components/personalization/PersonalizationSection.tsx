@@ -55,10 +55,24 @@ export const PersonalizationSection = forwardRef<HTMLElement, PersonalizationSec
     const [usedRealAi, setUsedRealAi] = useState(false);
     const step = Math.min(session.currentStep || 1, TOTAL_STEPS);
     const aiStoryPromiseRef = useRef<Promise<StoryPreview> | null>(null);
+    const phaseContentRef = useRef<HTMLDivElement>(null);
+    const isFirstRender = useRef(true);
 
     useEffect(() => {
       trackEvent("personalization_started");
     }, []);
+
+    // Ao trocar de fase (form -> loading -> preview) o card muda de altura,
+    // e o scroll do usuário pode acabar sobrando embaixo, cortando o topo do
+    // conteúdo novo. Realinha o topo do card com o topo da tela sempre que
+    // a fase muda, exceto na primeira renderização.
+    useEffect(() => {
+      if (isFirstRender.current) {
+        isFirstRender.current = false;
+        return;
+      }
+      phaseContentRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, [phase]);
 
     function goToStep(next: number) {
       setStep(next);
@@ -129,6 +143,7 @@ export const PersonalizationSection = forwardRef<HTMLElement, PersonalizationSec
     return (
       <section ref={ref} id="criar-historia" className="paper-panel py-16 sm:py-24">
         <Container>
+          <div ref={phaseContentRef} className="scroll-mt-6">
           <SectionTitle
             title={phase === "preview" ? "Sua história está tomando forma..." : "Vamos criar uma história agora?"}
             subtitle={
@@ -196,6 +211,7 @@ export const PersonalizationSection = forwardRef<HTMLElement, PersonalizationSec
                 onUnlock={handleUnlock}
               />
             )}
+          </div>
           </div>
         </Container>
       </section>
