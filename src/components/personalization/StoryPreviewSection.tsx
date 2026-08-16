@@ -1,11 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ImageOff, Lock, Loader2, Pause, Play, Sparkles } from "lucide-react";
+import { Lock, Loader2, Pause, Play, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { StyledPhotoCover } from "@/components/personalization/StyledPhotoCover";
 import { fetchAiNarration } from "@/services/story/aiStoryClient";
-import { getTemplatePageUrl } from "@/services/story/previewTemplates";
 import { trackEvent } from "@/lib/analytics";
 import { StorySession, StoryPreview } from "@/types/story";
 
@@ -73,16 +72,25 @@ export function StoryPreviewSection({
 
       <div className="mt-6 overflow-hidden rounded-card bg-white shadow-xl shadow-ink/10">
         <div className="grid grid-cols-1 sm:grid-cols-[1fr_1.3fr]">
-          <div className="flex items-center justify-center bg-secondary p-6">
+          <button
+            onClick={onUnlock}
+            className="group relative flex items-center justify-center bg-secondary p-6"
+          >
             <StyledPhotoCover
               photoDataUrl={session.photoDataUrl}
               theme={session.theme}
               visualStyle={session.visualStyle}
               aiImageUrl={aiImageUrl}
               title={preview.title}
-              className="max-w-[220px]"
+              className="max-w-[220px] brightness-[0.55] transition-[filter] group-hover:brightness-[0.45]"
             />
-          </div>
+            <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-2 text-white">
+              <span className="flex h-11 w-11 items-center justify-center rounded-full bg-white/15 backdrop-blur-sm">
+                <Lock className="h-5 w-5" />
+              </span>
+              <span className="text-xs font-semibold uppercase tracking-wide">Toque para desbloquear</span>
+            </div>
+          </button>
           <div className="p-6 sm:p-8">
             <p className="font-display text-lg font-semibold leading-snug text-ink sm:text-xl">
               {preview.title}
@@ -97,7 +105,6 @@ export function StoryPreviewSection({
               key={index}
               label={`Página ${index + 1}`}
               content={page}
-              imageUrl={getTemplatePageUrl(session.theme, index)}
               getAudio={() => getAudio(index)}
             />
           ))}
@@ -108,8 +115,8 @@ export function StoryPreviewSection({
             </div>
             <p className="mt-3 font-display text-base font-semibold text-ink">E essa foi só o começo...</p>
             <p className="mx-auto mt-1 max-w-sm text-sm text-ink-soft">
-              A partir da página 4, novos capítulos e ilustrações exclusivas esperam por{" "}
-              {childName || "seu filho"}.
+              As ilustrações e os capítulos completos esperam por {childName || "seu filho"} do
+              outro lado.
             </p>
             <Button onClick={onUnlock} className="mt-4 w-full sm:w-auto">
               Quero ver a história completa
@@ -126,31 +133,14 @@ type NarrationState = "idle" | "loading" | "playing" | "error";
 function PageBlock({
   label,
   content,
-  imageUrl,
   getAudio,
 }: {
   label: string;
   content: string;
-  imageUrl: string;
   getAudio: () => Promise<string>;
 }) {
   const [state, setState] = useState<NarrationState>("idle");
-  const [imageStatus, setImageStatus] = useState<"loading" | "loaded" | "error">("loading");
-  const [retryKey, setRetryKey] = useState(0);
-  const retryCountRef = useRef(0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-
-  function handleImageError() {
-    // A API gratuita às vezes bloqueia o pedido com um desafio anti-bot que
-    // não dá pra resolver automaticamente — tenta de novo algumas vezes
-    // antes de desistir e mostrar um estado de erro.
-    if (retryCountRef.current < 2) {
-      retryCountRef.current += 1;
-      setTimeout(() => setRetryKey((k) => k + 1), 1200);
-    } else {
-      setImageStatus("error");
-    }
-  }
 
   async function handleNarrate() {
     if (state === "loading") return;
@@ -184,52 +174,23 @@ function PageBlock({
   }
 
   return (
-    <div className="overflow-hidden rounded-xl border border-ink/10 bg-cream">
-      <div className="relative aspect-[4/3] w-full bg-ink/5">
-        {imageStatus !== "error" && (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            key={retryKey}
-            src={retryKey > 0 ? `${imageUrl}&retry=${retryKey}` : imageUrl}
-            alt={label}
-            className={`h-full w-full object-cover transition-opacity duration-500 ${
-              imageStatus === "loaded" ? "opacity-100" : "opacity-0"
-            }`}
-            onLoad={() => setImageStatus("loaded")}
-            onError={handleImageError}
-          />
-        )}
-        {imageStatus === "loading" && (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <Loader2 className="h-5 w-5 animate-spin text-ink-soft/50" />
-          </div>
-        )}
-        {imageStatus === "error" && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 text-ink-soft/50">
-            <ImageOff className="h-5 w-5" />
-            <span className="text-[11px]">Ilustração indisponível no momento</span>
-          </div>
-        )}
+    <div className="rounded-xl border border-ink/10 bg-cream p-4">
+      <div className="mb-1.5 flex items-center justify-between gap-2">
+        <p className="text-xs font-semibold uppercase tracking-wide text-primary-dark">{label}</p>
+        <button
+          onClick={handleNarrate}
+          className="flex items-center gap-1.5 rounded-full bg-white px-2.5 py-1 text-xs font-medium text-ink-soft shadow-sm transition-colors hover:text-primary-dark"
+        >
+          {state === "loading" && <Loader2 className="h-3 w-3 animate-spin" />}
+          {state === "playing" && <Pause className="h-3 w-3" />}
+          {(state === "idle" || state === "error") && <Play className="h-3 w-3" />}
+          {state === "loading" ? "Preparando..." : state === "playing" ? "Pausar" : "Ouvir"}
+        </button>
       </div>
-
-      <div className="p-4">
-        <div className="mb-1.5 flex items-center justify-between gap-2">
-          <p className="text-xs font-semibold uppercase tracking-wide text-primary-dark">{label}</p>
-          <button
-            onClick={handleNarrate}
-            className="flex items-center gap-1.5 rounded-full bg-white px-2.5 py-1 text-xs font-medium text-ink-soft shadow-sm transition-colors hover:text-primary-dark"
-          >
-            {state === "loading" && <Loader2 className="h-3 w-3 animate-spin" />}
-            {state === "playing" && <Pause className="h-3 w-3" />}
-            {(state === "idle" || state === "error") && <Play className="h-3 w-3" />}
-            {state === "loading" ? "Preparando..." : state === "playing" ? "Pausar" : "Ouvir"}
-          </button>
-        </div>
-        <p className="text-sm leading-relaxed text-ink-soft">{content}</p>
-        {state === "error" && (
-          <p className="mt-1.5 text-xs text-primary-dark">Não foi possível gerar a narração agora.</p>
-        )}
-      </div>
+      <p className="text-sm leading-relaxed text-ink-soft">{content}</p>
+      {state === "error" && (
+        <p className="mt-1.5 text-xs text-primary-dark">Não foi possível gerar a narração agora.</p>
+      )}
     </div>
   );
 }

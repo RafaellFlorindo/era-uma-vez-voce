@@ -64,7 +64,11 @@ export function StyledPhotoCover({
           </>
         ) : (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={`/covers/${theme ?? "magia"}.svg`} alt={title ?? ""} className="h-full w-full object-cover" />
+          <img
+            src={theme ? `/covers/${theme}.svg` : "/covers/mae-filho.jpg"}
+            alt={title ?? ""}
+            className="h-full w-full object-cover"
+          />
         ))}
 
       {aiImageUrl && (
