@@ -222,7 +222,7 @@ export function generateMockStoryPreview(session: StorySession): StoryPreview {
   return {
     title,
     intro,
-    coverUrl: `/covers/${themeId}.svg`,
+    coverUrl: `/covers/${themeId}.jpg`,
     pages: [page1, page2, page3],
   };
 }
@@ -239,7 +239,7 @@ export function generateLivePreview(session: Partial<StorySession>): LivePreview
   if (!name) {
     return {
       title: "A história do seu filho",
-      coverUrl: "/covers/magia.svg",
+      coverUrl: "/covers/mae-filho.jpg",
       snippet: "Conte um pouco sobre ele para começarmos a criar a aventura...",
       ready: false,
     };
@@ -248,7 +248,7 @@ export function generateLivePreview(session: Partial<StorySession>): LivePreview
   if (!theme) {
     return {
       title: `A história de ${name}`,
-      coverUrl: "/covers/magia.svg",
+      coverUrl: "/covers/mae-filho.jpg",
       snippet: `${name} está prestes a virar personagem principal de uma aventura só sua...`,
       ready: false,
     };
@@ -260,7 +260,7 @@ export function generateLivePreview(session: Partial<StorySession>): LivePreview
 
   return {
     title,
-    coverUrl: `/covers/${themeId}.svg`,
+    coverUrl: `/covers/${themeId}.jpg`,
     snippet,
     ready: true,
   };

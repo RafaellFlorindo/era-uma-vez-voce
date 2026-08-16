@@ -65,7 +65,7 @@ export function StyledPhotoCover({
         ) : (
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={theme ? `/covers/${theme}.svg` : "/covers/mae-filho.jpg"}
+            src={theme ? `/covers/${theme}.jpg` : "/covers/mae-filho.jpg"}
             alt={title ?? ""}
             className="h-full w-full object-cover"
           />

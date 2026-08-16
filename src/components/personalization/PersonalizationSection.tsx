@@ -92,7 +92,7 @@ export const PersonalizationSection = forwardRef<HTMLElement, PersonalizationSec
           return {
             title: ai.title,
             intro: ai.intro,
-            coverUrl: `/covers/${finalSession.theme ?? "magia"}.svg`,
+            coverUrl: `/covers/${finalSession.theme ?? "magia"}.jpg`,
             pages: ai.pages,
           };
         })
