@@ -1,3 +1,5 @@
+import { support } from "@/config/offer";
+
 export interface FaqItem {
   question: string;
   answer: string;
@@ -43,7 +45,6 @@ export const faqItems: FaqItem[] = [
   },
   {
     question: "E se eu não gostar do resultado?",
-    answer:
-      "[Inserir aqui a política de garantia oficial: prazo, condições e como solicitar.]",
+    answer: `Se o livro não for o que você imaginou, é só mandar uma mensagem para ${support.email} em até ${support.refundWindowDays} dias após a compra e devolvemos 100% do valor. Você fica com o livro do mesmo jeito.`,
   },
 ];
