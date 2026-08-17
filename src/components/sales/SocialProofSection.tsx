@@ -12,7 +12,7 @@ export function SocialProofSection() {
           subtitle="Prints reais de conversa de quem já viu a reação do filho ao se reconhecer no livro."
         />
 
-        <div className="mx-auto mt-10 grid max-w-4xl grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mx-auto mt-10 grid max-w-3xl grid-cols-1 gap-6 sm:grid-cols-2">
           {whatsappTestimonials.map((testimonial) => (
             <div
               key={testimonial.imageUrl}
