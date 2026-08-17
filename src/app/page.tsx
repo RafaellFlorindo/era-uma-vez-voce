@@ -11,7 +11,6 @@ import { SocialProofSection } from "@/components/sales/SocialProofSection";
 import { GuaranteeSection } from "@/components/sales/GuaranteeSection";
 import { FaqSection } from "@/components/sales/FaqSection";
 import { FinalCtaSection } from "@/components/sales/FinalCtaSection";
-import { StickyMobileCta } from "@/components/sales/StickyMobileCta";
 import { useStorySessionStore } from "@/store/storySession";
 import { trackEvent } from "@/lib/analytics";
 import { captureUtmParams } from "@/lib/utm";
@@ -31,7 +30,7 @@ export default function Home() {
   }
 
   return (
-    <main className="flex-1 pb-[calc(4.75rem+env(safe-area-inset-bottom))] sm:pb-0">
+    <main className="flex-1">
       <Hero ref={heroRef} onStart={scrollToWizard} />
       <DemoSection onStart={scrollToWizard} />
       <MechanismSection />
@@ -42,7 +41,6 @@ export default function Home() {
       <GuaranteeSection />
       <FaqSection />
       <FinalCtaSection onStart={scrollToWizard} />
-      <StickyMobileCta heroRef={heroRef} wizardRef={wizardRef} onClick={scrollToWizard} />
     </main>
   );
 }
