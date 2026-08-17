@@ -133,7 +133,7 @@ function PolaroidCard({
       }`}
     >
       {featured && (
-        <span className="absolute -top-2.5 left-1/2 z-10 -translate-x-1/2 rounded-full bg-accent px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-ink shadow-[var(--shadow-sm)]">
+        <span className="absolute -top-2.5 left-1/2 z-10 -translate-x-1/2 rounded-full bg-accent px-2.5 py-0.5 text-[10px] font-bold whitespace-nowrap uppercase tracking-wider text-ink shadow-[var(--shadow-sm)]">
           O livro dele
         </span>
       )}
