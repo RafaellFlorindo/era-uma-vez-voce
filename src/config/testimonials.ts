@@ -30,3 +30,17 @@ export const testimonials: Testimonial[] = [
     authorContext: "mãe do Pedro, 9 anos",
   },
 ];
+
+export interface WhatsappTestimonial {
+  imageUrl: string;
+  /** Nome de quem mandou a mensagem, só pra compor o alt-text da imagem. */
+  authorName: string;
+}
+
+/** Prints reais de conversa no WhatsApp de clientes, usados como prova social. */
+export const whatsappTestimonials: WhatsappTestimonial[] = [
+  { imageUrl: "/depoimentos/whatsapp-fernanda.jpg", authorName: "Fernanda" },
+  { imageUrl: "/depoimentos/whatsapp-patricia.jpg", authorName: "Patrícia" },
+  { imageUrl: "/depoimentos/whatsapp-carlos.jpg", authorName: "Carlos" },
+  { imageUrl: "/depoimentos/whatsapp-julina.jpg", authorName: "Julina" },
+];

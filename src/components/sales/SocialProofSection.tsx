@@ -1,8 +1,7 @@
-import { Quote } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { SectionTitle } from "@/components/ui/SectionTitle";
 import { ImageWithPlaceholder } from "@/components/ui/ImageWithPlaceholder";
-import { testimonials } from "@/config/testimonials";
+import { whatsappTestimonials } from "@/config/testimonials";
 
 export function SocialProofSection() {
   return (
@@ -10,34 +9,22 @@ export function SocialProofSection() {
       <Container>
         <SectionTitle
           title="O que os pais contam depois da primeira leitura"
-          subtitle="Histórias de quem já viu a reação do filho ao se reconhecer no livro."
+          subtitle="Prints reais de conversa de quem já viu a reação do filho ao se reconhecer no livro."
         />
 
-        <div className="mx-auto mt-10 grid max-w-4xl grid-cols-1 gap-4 sm:grid-cols-3">
-          {testimonials.map((testimonial, index) => (
-            <figure
-              key={index}
-              className="flex flex-col rounded-card bg-white p-5 shadow-sm shadow-ink/5"
+        <div className="mx-auto mt-10 grid max-w-4xl grid-cols-2 gap-4 sm:grid-cols-4">
+          {whatsappTestimonials.map((testimonial) => (
+            <div
+              key={testimonial.imageUrl}
+              className="overflow-hidden rounded-card bg-white p-1.5 shadow-sm shadow-ink/5 ring-1 ring-ink/5"
             >
-              <Quote className="h-5 w-5 shrink-0 text-accent" />
-
-              <blockquote className="mt-3 flex-1 text-sm leading-relaxed text-ink-soft">
-                {testimonial.quote}
-              </blockquote>
-
-              <figcaption className="mt-4 flex items-center gap-3 border-t border-ink/10 pt-4">
-                <ImageWithPlaceholder
-                  src={testimonial.photoUrl}
-                  alt={`Foto de ${testimonial.authorName}`}
-                  placeholderLabel="Foto"
-                  className="h-11 w-11 shrink-0 rounded-full"
-                />
-                <div className="min-w-0">
-                  <p className="truncate text-sm font-semibold text-ink">{testimonial.authorName}</p>
-                  <p className="truncate text-xs text-ink-soft">{testimonial.authorContext}</p>
-                </div>
-              </figcaption>
-            </figure>
+              <ImageWithPlaceholder
+                src={testimonial.imageUrl}
+                alt={`Conversa de WhatsApp com ${testimonial.authorName} sobre o livro`}
+                placeholderLabel="Print de conversa"
+                className="aspect-[9/16] w-full rounded-md"
+              />
+            </div>
           ))}
         </div>
       </Container>
