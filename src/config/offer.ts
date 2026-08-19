@@ -12,10 +12,10 @@ export interface PageTier {
 // Produto e ofertas criados na Cakto (produto "Era Uma Vez Você",
 // id 570d07bd-715d-4a20-9359-323b3a20034a).
 export const pageTiers: PageTier[] = [
-  { pages: 6, price: 29.9, offerId: "u4k5xbk" },
-  { pages: 12, price: 34.9, badge: "Mais escolhido", offerId: "bts3r5t" },
-  { pages: 18, price: 39.9, offerId: "mhs6qrc" },
-  { pages: 24, price: 44.9, offerId: "9r4sba6" },
+  { pages: 6, price: 19.9, offerId: "mo6u7b6" },
+  { pages: 12, price: 24.9, badge: "Mais escolhido", offerId: "d2ayuno" },
+  { pages: 18, price: 29.9, offerId: "zqpdetg" },
+  { pages: 24, price: 34.9, offerId: "gtwkmia" },
 ];
 
 export function caktoCheckoutUrl(offerId: string): string {
